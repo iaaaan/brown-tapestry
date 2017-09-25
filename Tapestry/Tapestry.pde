@@ -19,17 +19,27 @@ void draw () {
   sceneManager.render();
 }
 
+void keyReleased () {
+  if (key == ' ') {
+    sceneManager.togglePause();
+  }
+}
+
 class SceneManager {
   HashMap<String, Scene> sceneMap;
   Scene currentScene = null;
+  boolean paused = false;
+  String lastSceneId = "people";
 
   SceneManager () {}
 
   SceneManager init () {
     sceneMap = new HashMap<String, Scene>();
     PeopleScene peopleScene = new PeopleScene();
+    Scene blankScene = new Scene();
+    sceneMap.put("blank", blankScene);
     sceneMap.put("people", peopleScene);
-    currentScene = sceneMap.get("people");
+    currentScene = sceneMap.get(lastSceneId);
     currentScene.init();
     return this;
   }
@@ -45,32 +55,57 @@ class SceneManager {
       currentScene.render();
     }
   }
+
+  void togglePause () {
+    paused = !paused;
+    if (paused && currentScene.id != "blank") {
+      lastSceneId = currentScene.id;
+      currentScene.kill();
+      currentScene = sceneMap.get("blank");
+      println("init blank scene");
+      currentScene.init();
+    }
+    if (!paused && currentScene.id == "blank") {
+      currentScene.kill();
+      currentScene = sceneMap.get(lastSceneId);
+      currentScene.init();
+    }
+  }
 }
 
 class Scene {
+  String id = "blank";
+  int life = 0;
+
   Scene () {}
 
   Scene init () {
+    life = 0;
     return this;
   }
 
   void update () {
+    life ++;
   }
 
   void render () {
+    background(0);
+  }
 
+  void kill () {
+    println("killing scene:", id);
   }
 }
 
 class PeopleScene extends Scene {
   ArrayList<PImage> photos;
   color[] colors;
-  ArrayList<Portrait> portraits = new ArrayList();
+  ArrayList<Portrait> portraits;
   float portraitWidth = 120;
   float portraitHeight = 160;
 
   PeopleScene () {
-    
+    id = "people";
     String[] colorsCSV = loadStrings("./colors.txt");
     colors = new color[colorsCSV.length];
     for (int i = 0; i < colorsCSV.length; i++) {
@@ -97,11 +132,13 @@ class PeopleScene extends Scene {
 
   PeopleScene init () {
     super.init();
+    println("init people scene");
     int x = 0;
     int y = 0;
+    portraits = new ArrayList();
     for (PImage photo : photos) {
       int colorIndex = (int(y + x * 4) % colors.length);
-      Portrait portrait = new Portrait().init(photo, portraitWidth, portraitHeight, x, y, colors[colorIndex]);
+      Portrait portrait = new Portrait().init(this, photo, portraitWidth, portraitHeight, x, y, colors[colorIndex]);
       portraits.add(portrait);
       y ++;
       if (y > 4) {
@@ -113,13 +150,14 @@ class PeopleScene extends Scene {
   }
 
   void update () {
+    super.update();
     for (Portrait portrait : portraits) {
       portrait.update();
     }
   }
 
   void render () {
-    background(0);
+    super.render();
     pushMatrix();
     translate(width/2.0, height/2.0);
     for (Portrait portrait : portraits) {
@@ -132,6 +170,7 @@ class PeopleScene extends Scene {
 
 
 class Portrait {
+  Scene scene;
   PImage img;
   float w = 0;
   float h = 0;
@@ -145,7 +184,8 @@ class Portrait {
 
   Portrait () {}
 
-  Portrait init (PImage _img, float _w, float _h, int _x, int _y, color c) {
+  Portrait init (Scene _scene, PImage _img, float _w, float _h, int _x, int _y, color c) {
+    scene = _scene;
     img = _img;
     w = _w;
     h = _h;
@@ -161,25 +201,25 @@ class Portrait {
   }
 
   void update () {
-    if (status == 0 && frameCount > thresholds[0]) {
+    if (status == 0 && scene.life > thresholds[0]) {
         status = 1;
         angle = PI;
         tAngle = TWO_PI;
         println("ok!1", w, h, x, y);
     }
-    if (status == 1 && frameCount > thresholds[1]+1) {
+    if (status == 1 && scene.life > thresholds[1]+1) {
         status = 2;
         angle = PI;
         tAngle = TWO_PI;
         println("ok!2", w, h, x, y);
     }    
-    if (status == 2 && frameCount > thresholds[2]+2) {
+    if (status == 2 && scene.life > thresholds[2]+2) {
         status = 3;
         angle = PI;
         tAngle = TWO_PI;
         println("ok!3", w, h, x, y);
     }    
-    if (status == 3 && frameCount > thresholds[3]+3) {
+    if (status == 3 && scene.life > thresholds[3]+3) {
         status = 4;
         angle = PI;
         tAngle = TWO_PI;
