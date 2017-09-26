@@ -1,4 +1,6 @@
 /*
+  speed
+
 */
 
 class SearchlightScene extends Scene {
@@ -13,6 +15,7 @@ class SearchlightScene extends Scene {
 
   String projectCopy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tincidunt scelerisque dolor, ut feugiat justo convallis eu. Suspendisse laoreet erat vitae pellentesque pellentesque. Cras velit lacus, vehicula at metus sodales, pulvinar tincidunt felis. Sed tincidunt consequat nunc, a rutrum metus consectetur sit amet. Mauris consequat quam sem, non ultrices sem faucibus in. Fusce lobortis ante non nisl iaculis, vitae ultrices leo convallis. Ut non mi vitae turpis tincidunt consectetur sed ut odio. Duis sagittis pulvinar diam, eu ullamcorper eros tincidunt in. Sed facilisis id erat non tincidunt. Aliquam commodo, mauris sit amet aliquam mollis, nisi lorem sagittis odio, sit amet blandit ligula sapien et elit.";
   // String projectCopy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tincidunt scelerisque dolor, ut feugiat justo convallis eu.";
+
 
   SearchlightScene () {
     id = "searchLight";
@@ -42,30 +45,6 @@ class SearchlightScene extends Scene {
     waypoints.add(sentences.get(sentences.size() - 1).absolutePos[1]);
 
     waypointCursor = 0;
-
-    // projects = new HashMap<Integer, ArrayList<NounPhrase>>();
-    // for (int i = 0; i < projectCount; i ++) {
-    //   projects.put(i, new ArrayList<NounPhrase>());
-    // }
-
-    // nounPhrases = new ArrayList();
-    // textFont(bodyFont, fontSize);
-    // float lineHeight = textAscent() + textDescent();
-    // float characterWidth = textWidth("a");
-    // float x = -characterWidth * random(20);
-    // float y = 0;
-    // while (y < height) {
-    //   while (x < width) {
-    //     String c = copy.substring(0, int(10 + random(copy.length() - 10)));
-    //     NounPhrase nounPhrase = new NounPhrase().init(this, c.toUpperCase(), fontSize, x, y);
-    //     nounPhrases.add(nounPhrase);
-    //     projects.get(floor(random(projectCount))).add(nounPhrase);
-    //     x += c.length() * characterWidth;
-    //   }
-    //   x = -characterWidth * floor(random(20));
-    //   y += lineHeight;
-    // }
-
     perspective();
 
     return this;
@@ -78,21 +57,24 @@ class SearchlightScene extends Scene {
     }
 
     float cursorOffset = waypointCursor;
-    for (int i = 0; i < waypoints.size(); i++) {
+    for (int i = 0; i < waypoints.size() - 1; i++) {
       PVector v1 = waypoints.get(i);
-      if (cursorOffset - v1.mag() <= 0) {
-        if (i == waypoints.size() - 1) {
-          sceneManager.resetScene();
-          break;
-        }
-        PVector v2 = waypoints.get(i + 1);
-        float alpha = cursorOffset / v1.mag();
+      PVector v2 = waypoints.get(i + 1);
+      float dist = PVector.dist(v1, v2);
+      if (cursorOffset - dist <= 0) {
+        float alpha = cursorOffset / dist;
         pos = v1.copy().lerp(v2, alpha);
+        cursorOffset = 0;
         break;
       } else {
-        cursorOffset -= v1.mag();
+        cursorOffset -= dist;
       }
     }
+    if (cursorOffset > 0) {
+      println("scene done.");
+      sceneManager.resetScene();
+    }
+
     waypointCursor += speed;
   }
 
