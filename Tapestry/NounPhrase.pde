@@ -25,7 +25,7 @@ class NounPhrase {
   }
 
   void update () {
-    pos.lerp(tpos, 0.2);
+    pos.lerp(tpos, 0.1);
   }
 
   void render () {

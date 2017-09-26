@@ -1,4 +1,6 @@
 
+// 140 offset to the top
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Arrays;
@@ -31,6 +33,9 @@ void keyReleased () {
   }
   if (key == 'n') {
     sceneManager.nextScene();
+  }
+  if (key == 'r') {
+    sceneManager.resetScene();
   }
 }
 

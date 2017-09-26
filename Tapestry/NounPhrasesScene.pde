@@ -9,7 +9,7 @@ class NounPhrasesScene extends Scene {
   float fontSize = width / 80;
   HashMap<Integer, ArrayList<NounPhrase>> projects;
   int projectCount = 20;
-  int stepCount = 60 * 8;
+  int stepCount = 0;
   int focusProjectIndex = -1;
 
   NounPhrasesScene () {
@@ -44,6 +44,7 @@ class NounPhrasesScene extends Scene {
       y += lineHeight;
     }
 
+    stepCount = 60 * 8;
     perspective();
 
     return this;
