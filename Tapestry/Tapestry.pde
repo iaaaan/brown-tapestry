@@ -4,9 +4,15 @@ import java.io.FilenameFilter;
 import java.util.Arrays;
 
 SceneManager sceneManager;
+boolean development = true;
+float scaleFactor = 1;
+
+void settings () {
+  scaleFactor = development ? 3 : 1;
+  size(int(3840 / scaleFactor), int(940 / scaleFactor), P3D);
+}
 
 void setup () {
-  size(800, 600, P3D);
   background(0);
   ortho();
   noStroke();

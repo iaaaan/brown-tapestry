@@ -2,16 +2,21 @@ class SceneManager {
   HashMap<String, Scene> sceneMap;
   Scene currentScene = null;
   boolean paused = false;
-  String lastSceneId = "people";
+  String lastSceneId = "nouns";
 
   SceneManager () {}
 
   SceneManager init () {
     sceneMap = new HashMap<String, Scene>();
-    PeopleScene peopleScene = new PeopleScene();
+
     Scene blankScene = new Scene();
+    PeopleScene peopleScene = new PeopleScene();
+    NounPhrasesScene nounPhrasesScene = new NounPhrasesScene();
+
     sceneMap.put("blank", blankScene);
     sceneMap.put("people", peopleScene);
+    sceneMap.put("nouns", nounPhrasesScene);
+    
     currentScene = sceneMap.get(lastSceneId);
     currentScene.init();
     return this;
