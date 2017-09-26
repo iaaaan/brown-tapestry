@@ -13,7 +13,7 @@ class NounPhrasesScene extends Scene {
   int focusProjectIndex = -1;
 
   NounPhrasesScene () {
-    id = "noun";
+    id = "nouns";
     bodyFont = loadFont("InputMono-Medium-72.vlw");
   }
 
@@ -60,13 +60,13 @@ class NounPhrasesScene extends Scene {
       if (focusProjectIndex == -1) {
         for (NounPhrase n : nounPhrases) {
           n.focusState = -1;
-          n.tpos.z = -10;
+          n.tpos.z = -15;
         }
         focusProjectIndex = floor(random(projectCount));
         ArrayList<NounPhrase> project = projects.get(focusProjectIndex);
         for (NounPhrase n : project) {
           n.focusState = 1;
-          n.tpos.z = 10;
+          n.tpos.z = 0;
         }
       } else {
         focusProjectIndex = -1;

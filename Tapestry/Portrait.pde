@@ -1,3 +1,9 @@
+/*
+  tinting
+  other data
+  origami animation
+*/
+
 class Portrait {
   Scene scene;
   PImage img;
@@ -20,10 +26,14 @@ class Portrait {
     h = _h;
     x = _x;
     y = _y;
-    thresholds[0] = 100;
-    thresholds[1] = 500;
-    thresholds[2] = 1000;
-    thresholds[3] = 1500;
+    noiseSeed(0);
+    thresholds[0] = noise(x, y) * 200 + 100;
+    noiseSeed(100);
+    thresholds[1] = noise(x, y) * 200 + 500;
+    noiseSeed(1000);
+    thresholds[2] = noise(x, y) * 200 + 1000;
+    noiseSeed(10000);
+    thresholds[3] = noise(x, y) * 200 + 1500;
 
     col = c;
     return this;
@@ -34,74 +44,76 @@ class Portrait {
         status = 1;
         angle = PI;
         tAngle = TWO_PI;
-        println("ok!1", w, h, x, y);
     }
     if (status == 1 && scene.life > thresholds[1]+1) {
         status = 2;
         angle = PI;
         tAngle = TWO_PI;
-        println("ok!2", w, h, x, y);
     }    
     if (status == 2 && scene.life > thresholds[2]+2) {
         status = 3;
         angle = PI;
         tAngle = TWO_PI;
-        println("ok!3", w, h, x, y);
     }    
     if (status == 3 && scene.life > thresholds[3]+3) {
         status = 4;
         angle = PI;
         tAngle = TWO_PI;
-        println("ok!4", w, h, x, y);
     }    
-    angle = lerp(angle, tAngle,0.05);
+    angle = lerp(angle, tAngle, 0.1);
   }
 
   void render () {
+    // 3840
+    // float gutterX = width / 42.5;
+    // float gutterY = width / 27.5;
+    float gutterX = 0;
+    float gutterY = width / 50;
+    float margin = width / 140;
     if (status == 1) {
       pushMatrix();
-      translate(90-width/2.0+x*(w+30)+30+w/2.0, 140-height/2.0+30+y*(h+30));
+      translate(gutterX-width/2.0+x*(w+margin)+margin+w/2.0, gutterY-height/2.0+margin+y*(h+margin));
       rotateY(angle);
       fill(col);
       rect(-w/2.0,0,w,h);          
       rotateY(PI);
-      translate(0,0,1);
+      translate(0,0,0.01);
       fill(0);
       rect(-w/2.0,0,w,h);
       popMatrix();
     }    
     if (status == 2) {
       pushMatrix();
-      translate(90-width/2.0+x*(w+30)+30+w/2.0, 140-height/2.0+30+y*(h+30));
+      translate(gutterX-width/2.0+x*(w+margin)+margin+w/2.0, gutterY-height/2.0+margin+y*(h+margin));
       rotateY(angle);
       // tint(col);
       image(img,-w/2.0,0,w,h);
       rotateY(PI);
-      translate(0,0,1);
+      translate(0,0,0.01);
       fill(col);
       rect(-w/2.0,0,w,h);
       popMatrix();
     }    
     if (status == 3) {
       pushMatrix();
-      translate(90-width/2.0+x*(w+30)+30+w/2.0, 140-height/2.0+30+y*(h+30));
+      translate(gutterX-width/2.0+x*(w+margin)+margin+w/2.0, gutterY-height/2.0+margin+y*(h+margin));
       rotateY(angle);
       fill(col);
       rect(-w/2.0,0,w,h);
       rotateY(PI);
-      translate(0,0,1);
+      translate(0,0,0.01);
       // tint(col);
       image(img,-w/2.0,0,w,h);   
       popMatrix();
     }    
     if (status == 4) {
       pushMatrix();
-      translate(90-width/2.0+x*(w+30)+30+w/2.0, 140-height/2.0+30+y*(h+30));
+      translate(gutterX-width/2.0+x*(w+margin)+margin+w/2.0, gutterY-height/2.0+margin+y*(h+margin));
       rotateY(angle);
       fill(0);
       rect(-w/2.0,0,w,h);
       rotateY(PI);
-      translate(0,0,1);
+      translate(0,0,0.01);
       fill(col);
       rect(-w/2.0,0,w,h);
       popMatrix();
