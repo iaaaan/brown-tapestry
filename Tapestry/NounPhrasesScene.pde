@@ -8,12 +8,12 @@ class NounPhrasesScene extends Scene {
   PFont bodyFont;
   float fontSize = width / 80;
   HashMap<Integer, ArrayList<NounPhrase>> projects;
-  int projectCount = 40;
+  int projectCount = 20;
   int stepCount = 60 * 8;
   int focusProjectIndex = -1;
 
   NounPhrasesScene () {
-    id = "people";
+    id = "noun";
     bodyFont = loadFont("InputMono-Medium-72.vlw");
   }
 
@@ -82,7 +82,6 @@ class NounPhrasesScene extends Scene {
   void render () {
     super.render();
     pushMatrix();
-    // translate(width/2.0, height/2.0);
     for (NounPhrase nounPhrase : nounPhrases) {
       nounPhrase.render();
     }

@@ -29,6 +29,9 @@ void keyReleased () {
   if (key == ' ') {
     sceneManager.togglePause();
   }
+  if (key == 'n') {
+    sceneManager.nextScene();
+  }
 }
 
 

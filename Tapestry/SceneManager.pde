@@ -1,8 +1,11 @@
+import java.util.Arrays;
+
 class SceneManager {
   HashMap<String, Scene> sceneMap;
   Scene currentScene = null;
   boolean paused = false;
   String lastSceneId = "nouns";
+  String[] sceneIds = {"people", "nouns"};
 
   SceneManager () {}
 
@@ -39,7 +42,7 @@ class SceneManager {
     if (paused && currentScene.id != "blank") {
       lastSceneId = currentScene.id;
       currentScene.kill();
-      currentScene = sceneMap.get("blank");
+      currentScene = sceneMap.get(lastSceneId);
       println("init blank scene");
       currentScene.init();
     }
@@ -48,5 +51,15 @@ class SceneManager {
       currentScene = sceneMap.get(lastSceneId);
       currentScene.init();
     }
+  }
+
+  void nextScene () {
+    currentScene.kill();
+    if (currentScene.id != "blank") {
+      lastSceneId = currentScene.id;
+    }
+    println("wat", sceneIds[(Arrays.asList(sceneIds).indexOf(lastSceneId) + 1) % sceneIds.length]);
+    currentScene = sceneMap.get(sceneIds[(Arrays.asList(sceneIds).indexOf(lastSceneId) + 1) % sceneIds.length]);
+    currentScene.init();
   }
 }
