@@ -9,9 +9,13 @@ class SearchlightScene extends Scene {
   float fontSize = width / 300;
   ArrayList<Sentence> sentences;
   ArrayList<PVector> waypoints;
-  float speed = 3;
+  float speed = 2;
   float waypointCursor = 0;
   PVector pos = new PVector();
+
+  ArrayList<Marker> markers;
+  float markerSpawnInterval = 100;
+  float markerSpeed = 3;
 
   String projectCopy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tincidunt scelerisque dolor, ut feugiat justo convallis eu. Suspendisse laoreet erat vitae pellentesque pellentesque. Cras velit lacus, vehicula at metus sodales, pulvinar tincidunt felis. Sed tincidunt consequat nunc, a rutrum metus consectetur sit amet. Mauris consequat quam sem, non ultrices sem faucibus in. Fusce lobortis ante non nisl iaculis, vitae ultrices leo convallis. Ut non mi vitae turpis tincidunt consectetur sed ut odio. Duis sagittis pulvinar diam, eu ullamcorper eros tincidunt in. Sed facilisis id erat non tincidunt. Aliquam commodo, mauris sit amet aliquam mollis, nisi lorem sagittis odio, sit amet blandit ligula sapien et elit.";
   // String projectCopy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tincidunt scelerisque dolor, ut feugiat justo convallis eu.";
@@ -47,6 +51,8 @@ class SearchlightScene extends Scene {
     waypointCursor = 0;
     perspective();
 
+    markers = new ArrayList();
+
     return this;
   }
 
@@ -74,8 +80,21 @@ class SearchlightScene extends Scene {
       println("scene done.");
       sceneManager.resetScene();
     }
-
     waypointCursor += speed;
+
+    if (life % markerSpawnInterval == 0) {
+      Marker marker = new Marker().init(this, waypoints, markerSpeed);
+      markers.add(marker);
+    }    
+
+    for (int i = 0; i < markers.size(); i++) {
+      Marker marker = markers.get(i);
+      marker.update();
+      if (!marker.active) {
+        markers.remove(i);
+        i --;
+      }
+    }
   }
 
   void render () {
@@ -84,6 +103,10 @@ class SearchlightScene extends Scene {
     pushMatrix();
     translate(width / 2.0, height / 2.0);
     translate(-pos.x, -pos.y);
+
+    for (Marker marker : markers) {
+      marker.render();
+    }
 
     for (Sentence sentence : sentences) {
       sentence.render();
