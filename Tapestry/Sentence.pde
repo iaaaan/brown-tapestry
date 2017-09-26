@@ -56,9 +56,9 @@ class Sentence {
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
     rotate(rot);
-    fill(0);
+    fill(10);
     textSize(fontSize);
-    text(copy, 0, 0);
+    text(copy, 0, textAscent() / 2.0);
     popMatrix();
   }
 }
