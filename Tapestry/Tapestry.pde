@@ -1,9 +1,7 @@
 
 /*
   INTRODUCTION
-    optimize
-    interviews
-    include thank you video
+    interviews to mov
   PORTRAITS
   POSTERS
   EVENTS
@@ -38,7 +36,7 @@ import processing.video.*;
 
 
 SceneManager sceneManager;
-boolean development = false;
+boolean development = true;
 float scaleFactor = 1;
 int scriptStep = 0;
 float screenGutter = 140;

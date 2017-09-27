@@ -7,7 +7,7 @@ class SceneManager {
   String[] sceneIds = {"people", "nouns", "searchlight", "posters", "typewriter"};
 
   SceneManager () {
-    lastSceneId = !development ? "blank" : "searchlight";
+    lastSceneId = !development ? "blank" : "nouns";
   }
 
   SceneManager init (PApplet sketch) {
