@@ -4,6 +4,7 @@ class PostersScene extends Scene {
   ArrayList<Poster> posters;
   float posterWidth = screenWidth / 14.4;
   float posterHeight = screenWidth / 6.75;
+  int colorsOffset = 10;
 
   PostersScene () {
     id = "posters";
@@ -15,6 +16,8 @@ class PostersScene extends Scene {
     triggers[1] = 300;
     triggers[2] = 800;
     triggers[3] = 1100;
+
+    
 
     String[] colorsCSV = loadStrings("./colors.txt");
     colors = new color[colorsCSV.length];
@@ -54,7 +57,7 @@ class PostersScene extends Scene {
     int verticalCount = 1;
     for (PImage photo : photos) {
       int colorIndex = (k % colors.length);
-      Poster poster = new Poster().init(this, photo, posterWidth, posterHeight, x, y, colors[colorIndex], horizontalCount, verticalCount);
+      Poster poster = new Poster().init(this, photo, posterWidth, posterHeight, x, y, colors[colorIndex + colorsOffset], horizontalCount, verticalCount);
       posters.add(poster);
       x ++;
       k ++;

@@ -132,7 +132,6 @@ class Portrait {
     translate(scene.gutterX-screenWidth/2.0+x*(w+scene.margin)+scene.margin+w/2.0, scene.gutterY-screenHeight/2.0+scene.margin+y*(h+scene.margin));
 
     if (status == 1 || status == 4) {
-    // if (status == 1) {
       translate(origins[status - 1].x * w / 2.0, origins[status - 1].y * h / 2.0);
       if (abs(origins[status - 1].x) > abs(origins[status -1].y)) {
         if (origins[status - 1].x > 0) {
