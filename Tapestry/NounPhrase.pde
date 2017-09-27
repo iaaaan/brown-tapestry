@@ -2,8 +2,6 @@
 class NounPhrase {
   String copy;
   float fontSize;
-  // float x;
-  // float y;
   Scene scene;
   float interval = 20;
   float[] alphas;
@@ -11,14 +9,16 @@ class NounPhrase {
   PVector pos;
   PVector tpos;
   int focusState = 0;
+  boolean isProjectTitle = false;
 
   NounPhrase () {}
 
-  NounPhrase init (Scene _scene, String _copy, float _fontSize) {
+  NounPhrase init (Scene _scene, String _copy, float _fontSize, boolean _isProjectTitle) {
     copy = _copy;
     fontSize = _fontSize;
     scene = _scene;
     alphas = new float[copy.length()];
+    isProjectTitle = _isProjectTitle;
     return this;
   }
 
@@ -50,6 +50,9 @@ class NounPhrase {
       }
       alphas[i] = lerp(alphas[i], targetAlpha, 0.03);
       fill(alphas[i]);
+      if (focusState == 1 && isProjectTitle) {
+        fill(#F280B3, alphas[i]);
+      }
       text(copy.charAt(i), 0, 0);
       translate(characterWidth, 0);
     }

@@ -2,8 +2,6 @@
 /*
   PORTRAITS
   POSTERS
-    data
-    layout
   EVENTS
     data
     layout

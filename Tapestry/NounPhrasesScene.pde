@@ -54,7 +54,7 @@ class NounPhrasesScene extends Scene {
       projects.add(project);
 
       String titleCopy = projectJSON.getString("title");
-      NounPhrase titleNounPhrase = new NounPhrase().init(this, titleCopy.toUpperCase(), fontSize);
+      NounPhrase titleNounPhrase = new NounPhrase().init(this, titleCopy.toUpperCase(), fontSize, true);
       nounPhrases.add(titleNounPhrase);
       project.add(titleNounPhrase);
       characterNumber += titleCopy.length();
@@ -62,7 +62,7 @@ class NounPhrasesScene extends Scene {
       JSONArray projectNounPhrasesJSON = projectJSON.getJSONArray("nounphrases");
       for (int i = 0; i < projectNounPhrasesJSON.size(); i++) {
         String copy = projectNounPhrasesJSON.getString(i);
-        NounPhrase nounPhrase = new NounPhrase().init(this, copy.toUpperCase(), fontSize);
+        NounPhrase nounPhrase = new NounPhrase().init(this, copy.toUpperCase(), fontSize, false);
         nounPhrases.add(nounPhrase);
         project.add(nounPhrase);
         characterNumber += copy.length() + 1;
