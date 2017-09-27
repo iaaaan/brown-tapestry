@@ -7,7 +7,6 @@
     layout
     labels
   NOUN PHRASES
-    filter out doubles
   SEARCHLIGHT
     data
     constrain angle
@@ -15,13 +14,11 @@
     module
     background?
   CREDITS
+    data
   GLOBE
   MISC
     140 offset to the top
     intro/outro
-
-  Number one fear when working on big LED installation: causing a seizure in someone who's epileptic.
-
 */
 
 import java.io.File;

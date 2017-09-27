@@ -19,16 +19,20 @@ class SearchlightScene extends Scene {
 
   String projectCopy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tincidunt scelerisque dolor, ut feugiat justo convallis eu. Suspendisse laoreet erat vitae pellentesque pellentesque. Cras velit lacus, vehicula at metus sodales, pulvinar tincidunt felis. Sed tincidunt consequat nunc, a rutrum metus consectetur sit amet. Mauris consequat quam sem, non ultrices sem faucibus in. Fusce lobortis ante non nisl iaculis, vitae ultrices leo convallis. Ut non mi vitae turpis tincidunt consectetur sed ut odio. Duis sagittis pulvinar diam, eu ullamcorper eros tincidunt in. Sed facilisis id erat non tincidunt. Aliquam commodo, mauris sit amet aliquam mollis, nisi lorem sagittis odio, sit amet blandit ligula sapien et elit.";
 
+  JSONArray projectsJSON;
 
   SearchlightScene () {
     id = "searchLight";
-    bodyFont = loadFont("InputMono-Medium-72.vlw");
     bodyFont = loadFont("RubikMonoOne-Regular-72.vlw");
+    projectsJSON = loadJSONArray("projects.json");
   }
 
   SearchlightScene init () {
     super.init();
     println("init searchlight scene");
+
+    JSONObject project = (JSONObject) projectsJSON.get(floor(random(projectsJSON.size())));
+    projectCopy = project.getString("description");
 
     waypoints = new ArrayList<PVector>();
     textFont(bodyFont, fontSize);

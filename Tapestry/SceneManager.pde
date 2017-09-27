@@ -3,7 +3,7 @@ class SceneManager {
   HashMap<String, Scene> sceneMap;
   Scene currentScene = null;
   boolean paused = false;
-  String lastSceneId = "nouns";
+  String lastSceneId = "searchlight";
   String[] sceneIds = {"people", "nouns", "searchlight", "posters"};
 
   SceneManager () {}

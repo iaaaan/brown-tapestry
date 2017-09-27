@@ -20,14 +20,7 @@ class NounPhrasesScene extends Scene {
   NounPhrasesScene () {
     id = "nouns";
     bodyFont = loadFont("InputMono-Medium-72.vlw");
-
     projectsJSON = loadJSONArray("projects.json");
-    
-    
-
-    // ArrayList<ArrayList<NounPhrase>> projects
-
-
   }
 
   NounPhrasesScene init () {
