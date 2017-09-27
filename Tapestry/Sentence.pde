@@ -125,10 +125,10 @@ class Sentence {
 
       translate(charWidth, 0, 0);   
       float rad = 0;
-      if (r < width / 2) {
+      if (r < screenWidth / 2) {
         rad = 100000;
-      } else if (r < width) {
-        rad = map(r, width / 2, width, 100000, r);
+      } else if (r < screenWidth) {
+        rad = map(r, screenWidth / 2, screenWidth, 100000, r);
       } else {
         rad = r;
       }
@@ -165,10 +165,10 @@ class Sentence {
 
     // float charWidth = textWidth(" ");
     // float rad = 0;
-    // if (r < width / 4) {
+    // if (r < screenWidth / 4) {
     //   rad = 100000;
-    // } else if (r < width / 2) {
-    //   rad = map(r, width / 4, width / 2, 100000, r);
+    // } else if (r < screenWidth / 2) {
+    //   rad = map(r, screenWidth / 4, screenWidth / 2, 100000, r);
     // } else {
     //   rad = r;
     // }

@@ -3,10 +3,12 @@ class SceneManager {
   HashMap<String, Scene> sceneMap;
   Scene currentScene = null;
   boolean paused = false;
-  String lastSceneId = "blank";
+  String lastSceneId;
   String[] sceneIds = {"people", "nouns", "searchlight", "posters", "typewriter"};
 
-  SceneManager () {}
+  SceneManager () {
+    lastSceneId = !development ? "blank" : "nouns";
+  }
 
   SceneManager init (PApplet sketch) {
     sceneMap = new HashMap<String, Scene>();

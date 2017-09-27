@@ -16,7 +16,6 @@
   TYPEWRITER
     curve
   MISC
-    140 offset to the top
     intro/outro
     scene sequencing
 
@@ -34,7 +33,9 @@ SceneManager sceneManager;
 boolean development = true;
 float scaleFactor = 1;
 int scriptStep = 0;
-float gutter = 140;
+float screenGutter = 140;
+float screenWidth;
+float screenHeight;
 
 void settings () {
   scaleFactor = development ? 3 : 1;
@@ -45,12 +46,13 @@ void settings () {
 void setup () {
   background(0);
   return;
-  
 }
 
 void draw () {
 
   if (frameCount == 1) {
+    screenWidth = width;
+    screenHeight = height - screenGutter / scaleFactor;
     ortho();
     noStroke();
     float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
@@ -60,10 +62,13 @@ void draw () {
   }
 
   sceneManager.update();
+  pushMatrix();
+  translate(0, screenGutter / scaleFactor);
   sceneManager.render();
+  popMatrix();
 
-  fill(0);
-  rect(0, 0, width, gutter / scaleFactor);
+  fill(development? 10 : 0);
+  rect(0, 0, screenWidth, screenGutter / scaleFactor);
 }
 
 void keyReleased () {

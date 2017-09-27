@@ -2,8 +2,8 @@ class PostersScene extends Scene {
   ArrayList<PImage> photos;
   color[] colors;
   ArrayList<Poster> posters;
-  float posterWidth = width / 14.4;
-  float posterHeight = width / 6.75;
+  float posterWidth = screenWidth / 14.4;
+  float posterHeight = screenWidth / 6.75;
 
   PostersScene () {
     id = "posters";
@@ -70,7 +70,7 @@ class PostersScene extends Scene {
   void render () {
     super.render();
     pushMatrix();
-    translate(width/2.0, height/2.0);
+    translate(screenWidth/2.0, screenHeight/2.0);
     for (Poster poster : posters) {
       poster.render();
     }

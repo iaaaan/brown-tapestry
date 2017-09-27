@@ -2,7 +2,7 @@
 class SearchlightScene extends Scene {
 
   PFont bodyFont;
-  float fontSize = width / 50;
+  float fontSize = screenWidth / 50;
   ArrayList<Segment> segments;
   ArrayList<PVector> waypoints;
   float speed = 1;
@@ -132,7 +132,7 @@ class SearchlightScene extends Scene {
     super.render();
     background(0);
     pushMatrix();
-    translate(width / 2.0, height / 2.0);
+    translate(screenWidth / 2.0, screenHeight / 2.0);
     translate(-pos.x, -pos.y);
 
     blendMode(ADD);

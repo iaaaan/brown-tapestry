@@ -6,7 +6,7 @@ class NounPhrasesScene extends Scene {
   String copy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
   ArrayList<NounPhrase> nounPhrases;
   PFont bodyFont;
-  float fontSize = width / 80;
+  float fontSize = screenWidth / 80;
 
   ArrayList<ArrayList<NounPhrase>> projects;
 
@@ -35,7 +35,7 @@ class NounPhrasesScene extends Scene {
     textFont(bodyFont, fontSize);
     float lineHeight = textAscent() + textDescent();
     float characterWidth = textWidth("a");
-    float maxCharacterNumber = ceil((ceil(height / lineHeight) * (ceil(width / characterWidth) + 40)) * 0.95);
+    float maxCharacterNumber = ceil((ceil(screenHeight / lineHeight) * (ceil(screenWidth / characterWidth) + 40)) * 0.95);
     println("max", maxCharacterNumber);
 
     projects = new ArrayList<ArrayList<NounPhrase>>();
@@ -74,7 +74,7 @@ class NounPhrasesScene extends Scene {
     for (NounPhrase nounPhrase : nounPhrases) {
       nounPhrase.setPosition(x, y);
       x += (nounPhrase.copy.length() + 1) * characterWidth;
-      if (x > width ) {
+      if (x > screenWidth ) {
         x = -characterWidth * floor(random(12));
         // x = 0;
         y += lineHeight;

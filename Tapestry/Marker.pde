@@ -50,7 +50,7 @@ class Marker {
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
     scale(s);
-    image(module, 0, 0, height / 1.5, height / 1.5);
+    image(module, 0, 0, screenHeight / 1.5, screenHeight / 1.5);
     // fill(255, 0, 0);
     // ellipse(0, 0, 80, 80);
     popMatrix();

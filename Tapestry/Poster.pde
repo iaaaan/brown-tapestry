@@ -98,10 +98,10 @@ class Poster {
     if (status == 0 || (status == 4 && angle <= PI + PI / 2)) return;
 
     float gutterX = 0;
-    float gutterY = width / 25;
-    float margin = width / 140;
+    float gutterY = screenWidth / 25;
+    float margin = screenWidth / 140;
     pushMatrix();
-    translate(gutterX-width/2.0+x*(w+margin)+margin+w/2.0, gutterY-height/2.0+margin+y*(h+margin));
+    translate(gutterX-screenWidth/2.0+x*(w+margin)+margin+w/2.0, gutterY-screenHeight/2.0+margin+y*(h+margin));
 
     if (status == 1 || status == 4) {
     // if (status == 1) {

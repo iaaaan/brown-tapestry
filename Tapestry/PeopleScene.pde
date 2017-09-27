@@ -2,8 +2,8 @@ class PeopleScene extends Scene {
   ArrayList<PImage> photos;
   color[] colors;
   ArrayList<Portrait> portraits;
-  float portraitWidth = width / 40;
-  float portraitHeight = width / 30;
+  float portraitWidth = screenWidth / 40;
+  float portraitHeight = screenWidth / 30;
 
   PeopleScene () {
     id = "people";
@@ -97,7 +97,7 @@ class PeopleScene extends Scene {
   void render () {
     super.render();
     pushMatrix();
-    translate(width/2.0, height/2.0);
+    translate(screenWidth/2.0, screenHeight/2.0);
     for (Portrait portrait : portraits) {
       portrait.render();
     }

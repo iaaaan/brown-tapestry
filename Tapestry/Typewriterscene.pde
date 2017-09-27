@@ -2,7 +2,7 @@
 class TypewriterScene extends Scene {
 
   PFont bodyFont;
-  float fontSize = width / 50;
+  float fontSize = screenWidth / 50;
 
   JSONArray projectsJSON;
   ArrayList<Sentence> sentences;
@@ -58,7 +58,7 @@ class TypewriterScene extends Scene {
     pushMatrix();
     
     float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
-    translate(width / 2.0, height / 2.0, cameraZ);
+    translate(screenWidth / 2.0, height / 2.0, cameraZ);
     blendMode(ADD);
 
     if (currentSentence != null) currentSentence.renderActive();
