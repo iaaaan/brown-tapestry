@@ -7,12 +7,10 @@
     layout
     labels
   NOUN PHRASES
-    fix missing title
   SEARCHLIGHT
     remove pink on pink module
   CREDITS
     data
-  GLOBE
   TYPEWRITER
     curve
   MISC
