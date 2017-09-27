@@ -3,8 +3,8 @@ class SceneManager {
   HashMap<String, Scene> sceneMap;
   Scene currentScene = null;
   boolean paused = false;
-  String lastSceneId = "searchlight";
-  String[] sceneIds = {"people", "nouns", "searchlight"};
+  String lastSceneId = "people";
+  String[] sceneIds = {"people", "nouns", "searchlight", "posters"};
 
   SceneManager () {}
 
@@ -15,11 +15,13 @@ class SceneManager {
     PeopleScene peopleScene = new PeopleScene();
     NounPhrasesScene nounPhrasesScene = new NounPhrasesScene();
     SearchlightScene searchlightScene = new SearchlightScene();
+    PostersScene postersScene = new PostersScene();
 
     sceneMap.put("blank", blankScene);
     sceneMap.put("people", peopleScene);
     sceneMap.put("nouns", nounPhrasesScene);
     sceneMap.put("searchlight", searchlightScene);
+    sceneMap.put("posters", postersScene);
     
     currentScene = sceneMap.get(lastSceneId);
     currentScene.init();

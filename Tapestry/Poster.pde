@@ -1,5 +1,5 @@
 
-class Portrait {
+class Poster {
   Scene scene;
   PImage img;
   float w = 0;
@@ -9,18 +9,15 @@ class Portrait {
   int status = 0;
   float angle = TWO_PI;
   float tAngle = TWO_PI;
-  float angleSpeed = 0.1;
-  float alpha = 0;
-  float tAlpha = 1;
   color col;
   float[] thresholds = new float[4];
   PVector[] origins = new PVector[4];
 
   float noiseScaleFactor = 0.3;
 
-  Portrait () {}
+  Poster () {}
 
-  Portrait init (Scene _scene, PImage _img, float _w, float _h, int _x, int _y, color c, int hCount, int vCount) {
+  Poster init (Scene _scene, PImage _img, float _w, float _h, int _x, int _y, color c, int hCount, int vCount) {
     scene = _scene;
     img = _img;
     w = _w;
@@ -46,15 +43,6 @@ class Portrait {
         }
       }
     }
-    for (int j = -1; j <= 1; j++) {
-      if (y + j >= 0 && y + j <= vCount) {
-        float n = noise(x * noiseScaleFactor, (y + j) * noiseScaleFactor);
-        if (minThreshold > n) {
-          minThreshold = n;
-          origins[0] = new PVector(0, j);
-        }
-      }
-    }
 
     noiseSeed(100);
     thresholds[1] = noise(x * noiseScaleFactor, y * noiseScaleFactor) * 200 + 500;
@@ -62,7 +50,7 @@ class Portrait {
     noiseSeed(1000);
     thresholds[2] = noise(x * noiseScaleFactor, y * noiseScaleFactor) * 200 + 1000;
 
-    noiseSeed(10001);
+    noiseSeed(10000);
     thresholds[3] = (1 - noise(x * noiseScaleFactor, y * noiseScaleFactor)) * 200 + 1300;
     
     minThreshold = 1;
@@ -75,15 +63,6 @@ class Portrait {
         }
       }
     }
-    for (int j = -1; j <= 1; j++) {
-      if (y + j >= 0 && y + j <= vCount) {
-        float n = noise(x * noiseScaleFactor, (y + j) * noiseScaleFactor);
-        if (minThreshold > n) {
-          minThreshold = n;
-          origins[3] = new PVector(0, j);
-        }
-      }
-    }
 
     status = 0;
     col = c;
@@ -92,15 +71,11 @@ class Portrait {
 
   void update () {
     if (status == 0 && scene.life > thresholds[0]) {
-        alpha = 0;
-        tAlpha = 1;
         status = 1;
         angle = PI + PI / 2;
         tAngle = TWO_PI;
-        angleSpeed = 0.1;
     }
     if (status == 1 && scene.life > thresholds[1]) {
-        angleSpeed = 0.075;
         status = 2;
         angle = PI;
         tAngle = TWO_PI;
@@ -111,23 +86,19 @@ class Portrait {
         tAngle = TWO_PI;
     }    
     if (status == 3 && scene.life > thresholds[3]) {
-        angleSpeed = 0.1;
-        alpha = 1;
-        tAlpha = 0;
         status = 4;
         angle = TWO_PI;
         tAngle = PI;
     }    
-    angle = lerp(angle, tAngle, angleSpeed);
-    alpha = lerp(alpha, tAlpha, 0.12);
+    angle = lerp(angle, tAngle, 0.1);
   }
 
   void render () {
 
-    if (status == 0 || (status == 4 && angle <= PI + PI / 8)) return;
+    if (status == 0 || (status == 4 && angle <= PI + PI / 2)) return;
 
     float gutterX = 0;
-    float gutterY = width / 50;
+    float gutterY = width / 25;
     float margin = width / 140;
     pushMatrix();
     translate(gutterX-width/2.0+x*(w+margin)+margin+w/2.0, gutterY-height/2.0+margin+y*(h+margin));
@@ -155,8 +126,8 @@ class Portrait {
 
     switch (status) {
       case 1:
-        fill(col, alpha * 255);
-        rect(-w/2.0,0,w,h);
+        fill(col);
+      rect(-w/2.0,0,w,h);
         break;
       case 2:
         image(img,-w/2.0,0,w,h);
@@ -166,13 +137,13 @@ class Portrait {
         rect(-w/2.0,0,w,h);
         break;
       case 4:
-        fill(col, alpha * 255);
+        fill(col);
         rect(-w/2.0,0,w,h);
         break;
     }
 
     rotateY(PI);
-    translate(0,0,0.1);
+    translate(0,0,0.01);
 
     switch (status) {
       case 1:

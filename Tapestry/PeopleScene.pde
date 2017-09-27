@@ -25,27 +25,32 @@ class PeopleScene extends Scene {
         File[] listOfPictures = subDirectory.listFiles();
         for (int j = 0; j < listOfPictures.length; j++) {
           File picture = listOfPictures[j];
-          String portraitPath = dataFolderPath + "/complete-photos/" + subDirectory.getName() + "/" + picture.getName();
-          
-          int colorIndex = (k % colors.length);
-          color col = colors[colorIndex];
-          PImage photo = loadImage(portraitPath);
-          PGraphics pg = createGraphics(int(portraitWidth), int(portraitHeight));
-          pg.beginDraw();
-          pg.image(photo, 0, 0, portraitWidth, portraitHeight);
-          pg.filter(GRAY);
-          pg.blendMode(HARD_LIGHT);
-          pg.fill(col, 180);
-          if (abs(brightness(col) - 140) > 70) {
-            pg.blendMode(OVERLAY);
-            pg.fill(col, 100);
-          }
-          pg.noStroke();
-          pg.rect(0, 0, portraitWidth, portraitHeight);
-          pg.endDraw();
-          PImage tintedPhoto = pg.get();
-          photos.add(tintedPhoto);
-          k ++;
+            try {
+              String portraitPath = dataFolderPath + "/complete-photos/" + subDirectory.getName() + "/" + picture.getName();
+              
+              int colorIndex = (k % colors.length);
+              color col = colors[colorIndex];
+              PImage photo = loadImage(portraitPath);
+              PGraphics pg = createGraphics(int(portraitWidth), int(portraitHeight));
+              pg.beginDraw();
+              pg.noStroke();
+              pg.image(photo, 0, 0, portraitWidth, portraitHeight);
+              pg.filter(GRAY);
+              pg.blendMode(HARD_LIGHT);
+              pg.fill(col, 90);
+              if (abs(brightness(col) - 140) > 70) {
+                pg.blendMode(OVERLAY);
+                pg.fill(col, 50);
+              }
+              pg.rect(0, 0, portraitWidth, portraitHeight);
+              pg.blendMode(BLEND);
+              pg.fill(col, 50);
+              pg.rect(0, 0, portraitWidth, portraitHeight);
+              pg.endDraw();
+              PImage tintedPhoto = pg.get();
+              photos.add(tintedPhoto);
+              k ++;
+            } catch (Exception e) {}
         }
       }
     }
@@ -53,14 +58,17 @@ class PeopleScene extends Scene {
 
   PeopleScene init () {
     super.init();
+    // noiseDetail(6, 0.5);
     println("init people scene");
     int x = 0;
     int y = 0;
     int k = 0;
     portraits = new ArrayList();
+    int horizontalCount = ceil(photos.size() / 5);
+    int verticalCount = 5;
     for (PImage photo : photos) {
       int colorIndex = (k % colors.length);
-      Portrait portrait = new Portrait().init(this, photo, portraitWidth, portraitHeight, x, y, colors[colorIndex]);
+      Portrait portrait = new Portrait().init(this, photo, portraitWidth, portraitHeight, x, y, colors[colorIndex], horizontalCount, verticalCount);
       portraits.add(portrait);
       y ++;
       if (y > 4) {
@@ -69,9 +77,12 @@ class PeopleScene extends Scene {
       }
       k ++;
     }
-    ortho();
-    // perspective();
-    // camera(width/2.0, height/2.0, (height/2.0) / tan(PI*30.0 / 180.0), width/2.0, height/2.0, 0, 0, 1, 0);
+    // ortho();
+    // default value is PI * 30.0
+    float fovFactor = 3;
+    float cameraZ = (height/2.0) / tan(PI*8.5 / 180.0);
+    camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
+    perspective(PI/(3.0 * fovFactor), width/height, cameraZ/10.0, cameraZ*10.0);
     return this;
   }
 

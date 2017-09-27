@@ -14,14 +14,17 @@ class NounPhrase {
 
   NounPhrase () {}
 
-  NounPhrase init (Scene _scene, String _copy, float _fontSize, float x, float y) {
+  NounPhrase init (Scene _scene, String _copy, float _fontSize) {
     copy = _copy;
     fontSize = _fontSize;
-    pos = new PVector(x, y, 0);
-    tpos = new PVector(x, y, 0);
     scene = _scene;
     alphas = new float[copy.length()];
     return this;
+  }
+
+  void setPosition (float x, float y) {
+    pos = new PVector(x, y, 0);
+    tpos = new PVector(x, y, 0);
   }
 
   void update () {
