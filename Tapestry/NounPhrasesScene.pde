@@ -36,6 +36,7 @@ class NounPhrasesScene extends Scene {
     float lineHeight = textAscent() + textDescent();
     float characterWidth = textWidth("a");
     float maxCharacterNumber = ceil((ceil(height / lineHeight) * (ceil(width / characterWidth) + 40)) * 0.95);
+    println("max", maxCharacterNumber);
 
     projects = new ArrayList<ArrayList<NounPhrase>>();
     nounPhrases = new ArrayList();
@@ -118,6 +119,7 @@ class NounPhrasesScene extends Scene {
 
   void render () {
     super.render();
+    blendMode(BLEND);
     pushMatrix();
     for (NounPhrase nounPhrase : nounPhrases) {
       nounPhrase.render();

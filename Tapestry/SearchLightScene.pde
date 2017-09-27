@@ -3,7 +3,7 @@ class SearchlightScene extends Scene {
 
   PFont bodyFont;
   float fontSize = width / 50;
-  ArrayList<Sentence> sentences;
+  ArrayList<Segment> segments;
   ArrayList<PVector> waypoints;
   float speed = 1;
   float waypointCursor = 0;
@@ -43,18 +43,18 @@ class SearchlightScene extends Scene {
 
     waypoints = new ArrayList<PVector>();
     textFont(bodyFont, fontSize);
-    sentences = new ArrayList();
+    segments = new ArrayList();
     
     turnInterval = floor(3 + sq(random(1)) * 5);
     String[] words = split(projectCopy, ' ');
     ArrayList<String> phrases = new ArrayList();
-    String segment = "";
+    String seg = "";
     for (String w : words) {
-      segment += w + " ";
+      seg += w + " ";
       turnInterval --;
       if (turnInterval == 0) {
-        phrases.add(segment);
-        segment = "";
+        phrases.add(seg);
+        seg = "";
         turnInterval = floor(3 + sq(random(1)) * 5);
       }
     }
@@ -62,17 +62,17 @@ class SearchlightScene extends Scene {
     float theta = 0;
     PVector cursor = new PVector();
     for (String p : phrases) {
-      Sentence sentence = new Sentence().init(this, p, fontSize, cursor.x, cursor.y, theta);
-      sentences.add(sentence);
+      Segment segment = new Segment().init(this, p, fontSize, cursor.x, cursor.y, theta);
+      segments.add(segment);
       float thetaOffset = (random(1) < 0.5 ? 1 : -1) * PI / 2;
       if (theta <= -PI / 2) thetaOffset = PI / 2;
       if (theta >= PI / 2) thetaOffset = -PI / 2;
-      float sentenceWidth = textWidth(p + " ");
-      cursor.add(new PVector(cos(theta) * sentenceWidth, sin(theta) * sentenceWidth));
+      float segmentWidth = textWidth(p + " ");
+      cursor.add(new PVector(cos(theta) * segmentWidth, sin(theta) * segmentWidth));
       theta += thetaOffset;
-      waypoints.add(sentence.absolutePos[0]);
+      waypoints.add(segment.absolutePos[0]);
     }
-    waypoints.add(sentences.get(sentences.size() - 1).absolutePos[1]);
+    waypoints.add(segments.get(segments.size() - 1).absolutePos[1]);
 
     waypointCursor = 0;
     perspective();
@@ -86,8 +86,8 @@ class SearchlightScene extends Scene {
 
   void update () {
     super.update();
-    for (Sentence sentence : sentences) {
-      sentence.update();
+    for (Segment segment : segments) {
+      segment.update();
     }
 
     float cursorOffset = waypointCursor;
@@ -141,8 +141,8 @@ class SearchlightScene extends Scene {
     }
 
     blendMode(BLEND);
-    for (Sentence sentence : sentences) {
-      sentence.render();
+    for (Segment segment : segments) {
+      segment.render();
     }
     popMatrix();
   }
