@@ -53,11 +53,13 @@ class TypewriterScene extends Scene {
   }
 
   void render () {
+    float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
+    camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
+    perspective();
     super.render();
     background(0);
     pushMatrix();
     
-    float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
     translate(screenWidth / 2.0, height / 2.0, cameraZ);
     blendMode(ADD);
 

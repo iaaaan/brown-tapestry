@@ -10,7 +10,7 @@ class IntroductionScene extends Scene {
 
   IntroductionScene (PApplet sketch) {
     id = "intro";
-    introMovie = new Movie(sketch, "Showcase_v10_092717.mp4");
+    introMovie = new Movie(sketch, "Showcase_v11_092717_30fps.mp4");
     thankYouMovie = new Movie(sketch, "capture-rotation.mov");
   }
 
@@ -20,8 +20,11 @@ class IntroductionScene extends Scene {
     run = _run;
 
     step = 0;
+    // introMovie.frameRate(60);
     introMovie.play();
+    // introMovie.speed(4.0);
     ortho();
+    // frameRate(0);
 
     return this;
   }
@@ -72,6 +75,9 @@ class IntroductionScene extends Scene {
   }
 
   void render () {
+    float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
+    camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
+    perspective();
     if (!paused) {
       imageMode(CORNER);
       super.render();
@@ -94,6 +100,7 @@ class IntroductionScene extends Scene {
     super.kill();
     introMovie.stop();
     thankYouMovie.stop();
+    // frameRate(60);
   }
 
 }

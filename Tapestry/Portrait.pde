@@ -124,8 +124,6 @@ class Portrait {
 
   void render () {
 
-    println(scene.margin, scene.gutterX, scene.gutterY);
-
     if (status == 0 || (status == 4 && angle <= PI + PI / 8)) return;
 
     pushMatrix();

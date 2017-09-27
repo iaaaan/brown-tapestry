@@ -1,15 +1,23 @@
 
 /*
+  INTRODUCTION
+    optimize
+    interviews
+    include thank you video
   PORTRAITS
   POSTERS
-    change palette
   EVENTS
     data
     layout
     labels
   NOUN PHRASES
+    lighten up background quotes
+    titles disappear
   SEARCHLIGHT
-    remove pink on pink module
+    optimize
+    shift a few pixels away
+    marker blending
+    vary marker size?
   CREDITS
     data
   TYPEWRITER
@@ -17,6 +25,7 @@
   MISC
     intro/outro
     scene sequencing
+    full screen
 
 */
 
@@ -29,7 +38,7 @@ import processing.video.*;
 
 
 SceneManager sceneManager;
-boolean development = true;
+boolean development = false;
 float scaleFactor = 1;
 int scriptStep = 0;
 float screenGutter = 140;
@@ -41,14 +50,12 @@ void settings () {
   size(int(3840 / scaleFactor), int(1080 / scaleFactor), P3D);
 }
 
-
 void setup () {
   background(0);
   return;
 }
 
 void draw () {
-
   if (frameCount == 1) {
     screenWidth = width;
     screenHeight = height - screenGutter / scaleFactor;
@@ -129,6 +136,3 @@ void keyReleased () {
 void movieEvent(Movie m) {
   m.read();
 }
-
-
-

@@ -26,12 +26,12 @@ class SearchlightScene extends Scene {
     bodyFont = loadFont("RubikMonoOne-Regular-72.vlw");
     projectsJSON = loadJSONArray("projects.json");
 
-    modules = new PImage[5];
+    modules = new PImage[4];
     modules[0] = loadImage("modules/pink_dot.png");
     modules[1] = loadImage("modules/pink_square_.png");
-    modules[2] = loadImage("modules/pink_square_dot.png");
-    modules[3] = loadImage("modules/yellow_square_.png");
-    modules[4] = loadImage("modules/yellow_square_dot.png");
+    // modules[2] = loadImage("modules/pink_square_dot.png");
+    modules[2] = loadImage("modules/yellow_square_.png");
+    modules[3] = loadImage("modules/yellow_square_dot.png");
   }
 
   SearchlightScene init () {
@@ -129,6 +129,9 @@ class SearchlightScene extends Scene {
   }
 
   void render () {
+    float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
+    camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
+    perspective();
     super.render();
     background(0);
     pushMatrix();
