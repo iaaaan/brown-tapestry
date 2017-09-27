@@ -8,7 +8,6 @@
     labels
   NOUN PHRASES
     filter out doubles
-    color titles
   SEARCHLIGHT
     data
     constrain angle

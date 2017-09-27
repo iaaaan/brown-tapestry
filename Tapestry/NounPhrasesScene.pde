@@ -42,7 +42,7 @@ class NounPhrasesScene extends Scene {
     textFont(bodyFont, fontSize);
     float lineHeight = textAscent() + textDescent();
     float characterWidth = textWidth("a");
-    float maxCharacterNumber = ceil((ceil(height / lineHeight) * (ceil(width / characterWidth) + 40)) * 1);
+    float maxCharacterNumber = ceil((ceil(height / lineHeight) * (ceil(width / characterWidth) + 40)) * 0.95);
 
     projects = new ArrayList<ArrayList<NounPhrase>>();
     nounPhrases = new ArrayList();
@@ -59,24 +59,30 @@ class NounPhrasesScene extends Scene {
       project.add(titleNounPhrase);
       characterNumber += titleCopy.length();
 
+      ArrayList<String> copyList = new ArrayList();
       JSONArray projectNounPhrasesJSON = projectJSON.getJSONArray("nounphrases");
       for (int i = 0; i < projectNounPhrasesJSON.size(); i++) {
         String copy = projectNounPhrasesJSON.getString(i);
-        NounPhrase nounPhrase = new NounPhrase().init(this, copy.toUpperCase(), fontSize, false);
-        nounPhrases.add(nounPhrase);
-        project.add(nounPhrase);
-        characterNumber += copy.length() + 1;
+        if (!copyList.contains(copy)) {
+          copyList.add(copy);
+          NounPhrase nounPhrase = new NounPhrase().init(this, copy.toUpperCase(), fontSize, false);
+          nounPhrases.add(nounPhrase);
+          project.add(nounPhrase);
+          characterNumber += copy.length() + 1;
+        }
       }
     }
 
     Collections.shuffle(nounPhrases);
-    float x = -characterWidth * random(20);
+    float x = -characterWidth * floor(random(12));
+    // float x = 0;
     float y = 0;
     for (NounPhrase nounPhrase : nounPhrases) {
       nounPhrase.setPosition(x, y);
       x += (nounPhrase.copy.length() + 1) * characterWidth;
       if (x > width ) {
-        x = -characterWidth * floor(random(20));
+        x = -characterWidth * floor(random(12));
+        // x = 0;
         y += lineHeight;
       }
     }
