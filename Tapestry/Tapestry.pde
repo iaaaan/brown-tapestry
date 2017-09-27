@@ -7,7 +7,9 @@
     layout
     labels
   NOUN PHRASES
+    fix missing title
   SEARCHLIGHT
+    remove pink on pink module
   CREDITS
     data
   GLOBE
@@ -17,6 +19,7 @@
     140 offset to the top
     intro/outro
     scene sequencing
+
 */
 
 import java.io.File;
@@ -31,6 +34,7 @@ SceneManager sceneManager;
 boolean development = true;
 float scaleFactor = 1;
 int scriptStep = 0;
+float gutter = 140;
 
 void settings () {
   scaleFactor = development ? 3 : 1;
@@ -57,6 +61,9 @@ void draw () {
 
   sceneManager.update();
   sceneManager.render();
+
+  fill(0);
+  rect(0, 0, width, gutter / scaleFactor);
 }
 
 void keyReleased () {
