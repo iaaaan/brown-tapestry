@@ -15,14 +15,23 @@ class SearchlightScene extends Scene {
 
   float turnInterval; 
 
-  String projectCopy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tincidunt scelerisque dolor, ut feugiat justo convallis eu. Suspendisse laoreet erat vitae pellentesque pellentesque. Cras velit lacus, vehicula at metus sodales, pulvinar tincidunt felis. Sed tincidunt consequat nunc, a rutrum metus consectetur sit amet. Mauris consequat quam sem, non ultrices sem faucibus in. Fusce lobortis ante non nisl iaculis, vitae ultrices leo convallis. Ut non mi vitae turpis tincidunt consectetur sed ut odio. Duis sagittis pulvinar diam, eu ullamcorper eros tincidunt in. Sed facilisis id erat non tincidunt. Aliquam commodo, mauris sit amet aliquam mollis, nisi lorem sagittis odio, sit amet blandit ligula sapien et elit.";
-
   JSONArray projectsJSON;
+
+  PImage[] modules;
+
+  String projectCopy;
 
   SearchlightScene () {
     id = "searchLight";
     bodyFont = loadFont("RubikMonoOne-Regular-72.vlw");
     projectsJSON = loadJSONArray("projects.json");
+
+    modules = new PImage[5];
+    modules[0] = loadImage("modules/pink_dot.png");
+    modules[1] = loadImage("modules/pink_square_.png");
+    modules[2] = loadImage("modules/pink_square_dot.png");
+    modules[3] = loadImage("modules/yellow_square_.png");
+    modules[4] = loadImage("modules/yellow_square_dot.png");
   }
 
   SearchlightScene init () {
@@ -36,7 +45,7 @@ class SearchlightScene extends Scene {
     textFont(bodyFont, fontSize);
     sentences = new ArrayList();
     
-    turnInterval = floor(3 + random(5));
+    turnInterval = floor(3 + sq(random(1)) * 5);
     String[] words = split(projectCopy, ' ');
     ArrayList<String> phrases = new ArrayList();
     String segment = "";
@@ -46,7 +55,7 @@ class SearchlightScene extends Scene {
       if (turnInterval == 0) {
         phrases.add(segment);
         segment = "";
-        turnInterval = floor(3 + random(5));
+        turnInterval = floor(3 + sq(random(1)) * 5);
       }
     }
 
@@ -67,6 +76,7 @@ class SearchlightScene extends Scene {
 
     waypointCursor = 0;
     perspective();
+    imageMode(CENTER);
 
     markers = new ArrayList();
 
@@ -101,7 +111,8 @@ class SearchlightScene extends Scene {
     waypointCursor += speed;
 
     if (markerSpawnInterval == 0) {
-      Marker marker = new Marker().init(this, waypoints, markerSpeed);
+      PImage texture = markers.size() == 0 ? modules[0] : modules[floor(random(modules.length))];
+      Marker marker = new Marker().init(this, waypoints, markerSpeed, texture);
       markers.add(marker);
       markerSpawnInterval = int(150 + random(100));
     }   
@@ -124,10 +135,12 @@ class SearchlightScene extends Scene {
     translate(width / 2.0, height / 2.0);
     translate(-pos.x, -pos.y);
 
+    blendMode(ADD);
     for (Marker marker : markers) {
       marker.render();
     }
 
+    blendMode(BLEND);
     for (Sentence sentence : sentences) {
       sentence.render();
     }

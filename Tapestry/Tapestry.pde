@@ -8,8 +8,6 @@
     labels
   NOUN PHRASES
   SEARCHLIGHT
-    module
-    background?
   CREDITS
     data
   GLOBE
