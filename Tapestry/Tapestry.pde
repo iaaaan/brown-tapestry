@@ -8,9 +8,6 @@
     labels
   NOUN PHRASES
   SEARCHLIGHT
-    data
-    constrain angle
-    split phrases in shorter segments
     module
     background?
   CREDITS
@@ -19,6 +16,7 @@
   MISC
     140 offset to the top
     intro/outro
+    scene sequencing
 */
 
 import java.io.File;

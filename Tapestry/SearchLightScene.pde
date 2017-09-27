@@ -1,7 +1,3 @@
-/*
-  modules
-  constrain angle
-*/
 
 class SearchlightScene extends Scene {
 
@@ -16,6 +12,8 @@ class SearchlightScene extends Scene {
   ArrayList<Marker> markers;
   float markerSpawnInterval = 20;
   float markerSpeed = 2;
+
+  float turnInterval; 
 
   String projectCopy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tincidunt scelerisque dolor, ut feugiat justo convallis eu. Suspendisse laoreet erat vitae pellentesque pellentesque. Cras velit lacus, vehicula at metus sodales, pulvinar tincidunt felis. Sed tincidunt consequat nunc, a rutrum metus consectetur sit amet. Mauris consequat quam sem, non ultrices sem faucibus in. Fusce lobortis ante non nisl iaculis, vitae ultrices leo convallis. Ut non mi vitae turpis tincidunt consectetur sed ut odio. Duis sagittis pulvinar diam, eu ullamcorper eros tincidunt in. Sed facilisis id erat non tincidunt. Aliquam commodo, mauris sit amet aliquam mollis, nisi lorem sagittis odio, sit amet blandit ligula sapien et elit.";
 
@@ -37,14 +35,29 @@ class SearchlightScene extends Scene {
     waypoints = new ArrayList<PVector>();
     textFont(bodyFont, fontSize);
     sentences = new ArrayList();
-    String[] phrases = split(projectCopy, '.');
+    
+    turnInterval = floor(3 + random(5));
+    String[] words = split(projectCopy, ' ');
+    ArrayList<String> phrases = new ArrayList();
+    String segment = "";
+    for (String w : words) {
+      segment += w + " ";
+      turnInterval --;
+      if (turnInterval == 0) {
+        phrases.add(segment);
+        segment = "";
+        turnInterval = floor(3 + random(5));
+      }
+    }
+
     float theta = 0;
     PVector cursor = new PVector();
     for (String p : phrases) {
-      p += ".";
       Sentence sentence = new Sentence().init(this, p, fontSize, cursor.x, cursor.y, theta);
       sentences.add(sentence);
       float thetaOffset = (random(1) < 0.5 ? 1 : -1) * PI / 2;
+      if (theta <= -PI / 2) thetaOffset = PI / 2;
+      if (theta >= PI / 2) thetaOffset = -PI / 2;
       float sentenceWidth = textWidth(p + " ");
       cursor.add(new PVector(cos(theta) * sentenceWidth, sin(theta) * sentenceWidth));
       theta += thetaOffset;
@@ -56,6 +69,7 @@ class SearchlightScene extends Scene {
     perspective();
 
     markers = new ArrayList();
+
 
     return this;
   }
