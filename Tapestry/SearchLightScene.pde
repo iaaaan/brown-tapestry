@@ -22,7 +22,7 @@ class SearchlightScene extends Scene {
   String projectCopy;
 
   SearchlightScene () {
-    id = "searchLight";
+    id = "searchlight";
     bodyFont = loadFont("RubikMonoOne-Regular-72.vlw");
     projectsJSON = loadJSONArray("projects.json");
 

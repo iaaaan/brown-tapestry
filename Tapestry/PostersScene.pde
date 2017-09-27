@@ -56,6 +56,7 @@ class PostersScene extends Scene {
     float cameraZ = (height/2.0) / tan(PI*8.5 / 180.0);
     camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
     perspective(PI/(3.0 * fovFactor), width/height, cameraZ/10.0, cameraZ*10.0);
+    imageMode(CORNER);
     return this;
   }
 

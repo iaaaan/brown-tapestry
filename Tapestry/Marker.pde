@@ -13,7 +13,7 @@ class Marker {
 
   Marker init (Scene _scene, ArrayList<PVector> _waypoints, float _speed, PImage _module) {
     waypoints = _waypoints;
-    speed = _speed * (random(1) + 0.65);
+    speed = _speed * (random(0.75) + 0.75);
     pos = new PVector();
     waypointCursor = 0;
     scene = _scene;

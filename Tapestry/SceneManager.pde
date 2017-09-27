@@ -61,7 +61,10 @@ class SceneManager {
     if (currentScene.id != "blank") {
       lastSceneId = currentScene.id;
     }
-    currentScene = sceneMap.get(sceneIds[(Arrays.asList(sceneIds).indexOf(lastSceneId) + 1) % sceneIds.length]);
+    currentScene = sceneMap.get(sceneIds[(Arrays.asList(sceneIds).indexOf(lastSceneId) + 1) % (sceneIds.length + 1)]);
+    float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
+    camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
+    perspective(PI/(3.0), width/height, cameraZ/10.0, cameraZ*10.0);
     currentScene.init();
   }
 
