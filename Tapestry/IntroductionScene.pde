@@ -10,7 +10,8 @@ class IntroductionScene extends Scene {
 
   IntroductionScene (PApplet sketch) {
     id = "intro";
-    introMovie = new Movie(sketch, "Showcase_v11_092717_30fps.mp4");
+    introMovie = new Movie(sketch, "showcase_welcome_v3_092717_lowRes.mp4");
+    // introMovie = new Movie(sketch, "Showcase_v11_092717_30fps.mp4");
     thankYouMovie = new Movie(sketch, "capture-rotation.mov");
   }
 
