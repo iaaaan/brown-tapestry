@@ -7,6 +7,15 @@ class PostersScene extends Scene {
 
   PostersScene () {
     id = "posters";
+
+    gutterX = 0;
+    gutterY = screenWidth / 12;
+    margin = screenWidth / 140;
+    triggers[0] = 100;
+    triggers[1] = 300;
+    triggers[2] = 800;
+    triggers[3] = 1100;
+
     String[] colorsCSV = loadStrings("./colors.txt");
     colors = new color[colorsCSV.length];
     for (int i = 0; i < colorsCSV.length; i++) {
@@ -50,8 +59,6 @@ class PostersScene extends Scene {
       x ++;
       k ++;
     }
-    // ortho();
-    // perspective();
     float fovFactor = 3;
     float cameraZ = (height/2.0) / tan(PI*8.5 / 180.0);
     camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
@@ -68,6 +75,10 @@ class PostersScene extends Scene {
   }
 
   void render () {
+    float fovFactor = 3;
+    float cameraZ = (height/2.0) / tan(PI*8.5 / 180.0);
+    camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
+    perspective(PI/(3.0 * fovFactor), width/height, cameraZ/10.0, cameraZ*10.0);
     super.render();
     pushMatrix();
     translate(screenWidth/2.0, screenHeight/2.0);

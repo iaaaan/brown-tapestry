@@ -2,6 +2,7 @@
 /*
   PORTRAITS
   POSTERS
+    change palette
   EVENTS
     data
     layout
@@ -65,7 +66,10 @@ void draw () {
   sceneManager.render();
   popMatrix();
 
-  fill(development? 10 : 0);
+  float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
+  camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
+  perspective(PI/(3.0), width/height, cameraZ/10.0, cameraZ*10.0);
+  fill(!development ? 0 : 10);
   rect(0, 0, screenWidth, screenGutter / scaleFactor);
 }
 

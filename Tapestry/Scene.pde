@@ -1,6 +1,10 @@
 class Scene {
   String id = "blank";
   int life = 0;
+  float gutterX = 0;
+  float gutterY = 0;
+  float margin = 0;
+  float[] triggers = {100, 500, 1000, 1300};
 
   Scene () {}
 

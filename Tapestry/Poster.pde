@@ -31,7 +31,7 @@ class Poster {
     origins[3] = new PVector();
 
     noiseSeed(0);
-    thresholds[0] = noise(x * noiseScaleFactor, y * noiseScaleFactor) * 200 + 100;
+    thresholds[0] = noise(x * noiseScaleFactor, y * noiseScaleFactor) * 200 + scene.triggers[0];
     
     float minThreshold = 1;
     for (int i = -1; i <= 1; i++) {
@@ -45,13 +45,13 @@ class Poster {
     }
 
     noiseSeed(100);
-    thresholds[1] = noise(x * noiseScaleFactor, y * noiseScaleFactor) * 200 + 500;
+    thresholds[1] = noise(x * noiseScaleFactor, y * noiseScaleFactor) * 200 + scene.triggers[1];
 
     noiseSeed(1000);
-    thresholds[2] = noise(x * noiseScaleFactor, y * noiseScaleFactor) * 200 + 1000;
+    thresholds[2] = noise(x * noiseScaleFactor, y * noiseScaleFactor) * 200 + scene.triggers[2];
 
     noiseSeed(10000);
-    thresholds[3] = (1 - noise(x * noiseScaleFactor, y * noiseScaleFactor)) * 200 + 1300;
+    thresholds[3] = (1 - noise(x * noiseScaleFactor, y * noiseScaleFactor)) * 200 + scene.triggers[3];
     
     minThreshold = 1;
     for (int i = -1; i <= 1; i++) {
@@ -97,11 +97,8 @@ class Poster {
 
     if (status == 0 || (status == 4 && angle <= PI + PI / 2)) return;
 
-    float gutterX = 0;
-    float gutterY = screenWidth / 25;
-    float margin = screenWidth / 140;
     pushMatrix();
-    translate(gutterX-screenWidth/2.0+x*(w+margin)+margin+w/2.0, gutterY-screenHeight/2.0+margin+y*(h+margin));
+    translate(scene.gutterX-screenWidth/2.0+x*(w+scene.margin)+scene.margin+w/2.0, scene.gutterY-screenHeight/2.0+scene.margin+y*(h+scene.margin));
 
     if (status == 1 || status == 4) {
     // if (status == 1) {
