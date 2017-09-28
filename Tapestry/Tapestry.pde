@@ -55,7 +55,7 @@ import processing.video.*;
 
 
 SceneManager sceneManager;
-boolean development = true;
+boolean development = false;
 float scaleFactor = 1;
 int scriptStep = 0;
 float screenGutter = 140;
