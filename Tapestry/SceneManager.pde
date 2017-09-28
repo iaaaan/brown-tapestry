@@ -4,10 +4,10 @@ class SceneManager {
   Scene currentScene = null;
   boolean paused = false;
   String lastSceneId;
-  String[] sceneIds = {"people", "nouns", "searchlight", "posters"};
+  String[] sceneIds = {"people", "nouns", "searchlight", "posters", "credits"};
 
   SceneManager () {
-    lastSceneId = !development ? "blank" : "searchlight";
+    lastSceneId = !development ? "blank" : "credits";
   }
 
   SceneManager init (PApplet sketch) {
@@ -18,16 +18,18 @@ class SceneManager {
     NounPhrasesScene nounPhrasesScene = new NounPhrasesScene();
     SearchlightScene searchlightScene = new SearchlightScene();
     PostersScene postersScene = new PostersScene();
-    // TypewriterScene typewriterScene = new TypewriterScene();
     IntroductionScene introductionScene = new IntroductionScene(sketch);
+    CreditsScene creditsScene = new CreditsScene();
+    // TypewriterScene typewriterScene = new TypewriterScene();
 
     sceneMap.put("blank", blankScene);
     sceneMap.put("people", peopleScene);
     sceneMap.put("nouns", nounPhrasesScene);
     sceneMap.put("searchlight", searchlightScene);
     sceneMap.put("posters", postersScene);
-    // sceneMap.put("typewriter", typewriterScene);
     sceneMap.put("intro", introductionScene);
+    sceneMap.put("credits", creditsScene);
+    // sceneMap.put("typewriter", typewriterScene);
     
     currentScene = sceneMap.get(lastSceneId);
     currentScene.init();

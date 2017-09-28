@@ -1,15 +1,11 @@
 
 /*
   CREDITS
-    data
+    unfold
+    sequence
   HIGHLIGHT STAGE
     scene
     sequence
-  EVENTS
-    data
-    layout
-  NOUN PHRASES
-    titles disappear
   MISC
     scene sequencing
     add reset sketch input
@@ -17,6 +13,11 @@
     check unicode
     // black wallpaper
     // export app?
+  EVENTS
+    data
+    layout
+  NOUN PHRASES
+    titles disappear
   SEARCHLIGHT
     // optimize
     // marker blending
