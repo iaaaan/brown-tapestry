@@ -11,7 +11,7 @@ class SearchlightScene extends Scene {
 
   ArrayList<Marker> markers;
   float markerSpawnInterval = 20;
-  float markerSpeed = 2;
+  float markerSpeed = 5 / scaleFactor;
 
   float turnInterval; 
 
