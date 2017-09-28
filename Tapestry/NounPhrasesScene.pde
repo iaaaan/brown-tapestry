@@ -29,7 +29,9 @@ class NounPhrasesScene extends Scene {
 
     ArrayList<JSONObject> allProjects = new ArrayList<JSONObject>();
     for (int i = 0; i < projectsJSON.size(); i++) {
-      allProjects.add((JSONObject) projectsJSON.get(i));
+      if (i != 19 && i != 28 && i != 32) {
+        allProjects.add((JSONObject) projectsJSON.get(i));
+      }
     }
 
     textFont(bodyFont, fontSize);
@@ -55,6 +57,7 @@ class NounPhrasesScene extends Scene {
 
       ArrayList<String> copyList = new ArrayList();
       JSONArray projectNounPhrasesJSON = projectJSON.getJSONArray("nounphrases");
+      
       for (int i = 0; i < projectNounPhrasesJSON.size(); i++) {
         String copy = projectNounPhrasesJSON.getString(i);
         if (!copyList.contains(copy)) {
@@ -64,20 +67,30 @@ class NounPhrasesScene extends Scene {
           project.add(nounPhrase);
           characterNumber += copy.length() + 1;
         }
-      }
+      } 
     }
 
     Collections.shuffle(nounPhrases);
-    float x = -characterWidth * floor(random(12));
-    // float x = 0;
+
+    ArrayList<NounPhrase> nounPhrasesBucket = (ArrayList<NounPhrase>) nounPhrases.clone();
+
     float y = 0;
-    for (NounPhrase nounPhrase : nounPhrases) {
-      nounPhrase.setPosition(x, y);
-      x += (nounPhrase.copy.length() + 1) * characterWidth;
-      if (x > screenWidth ) {
-        x = -characterWidth * floor(random(12));
-        // x = 0;
-        y += lineHeight;
+    float x = -characterWidth * floor(random(12));
+    int errorCount = 0;
+    while (nounPhrasesBucket.size() > 0) {
+      NounPhrase nounPhrase = nounPhrasesBucket.get(floor(random(nounPhrasesBucket.size())));
+      if (errorCount > 1000 || !nounPhrase.isProjectTitle || (y > 0 && y < floor(screenHeight / lineHeight) && x > 0 && x < floor(screenWidth / characterWidth))) {
+        // println("setting position");
+        nounPhrase.setPosition(x, y);
+        x += (nounPhrase.copy.length() + 1) * characterWidth;
+        if (x > screenWidth ) {
+          x = -characterWidth * floor(random(12));
+          y += lineHeight;
+        }
+        nounPhrasesBucket.remove(nounPhrase);
+      } else {
+        errorCount ++;
+        // println("layout error:", errorCount);
       }
     }
 

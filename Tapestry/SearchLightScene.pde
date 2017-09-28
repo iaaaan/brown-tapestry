@@ -38,7 +38,12 @@ class SearchlightScene extends Scene {
     super.init();
     println("init searchlight scene");
 
-    JSONObject project = (JSONObject) projectsJSON.get(floor(random(projectsJSON.size())));
+    int projectId = -1;
+    while (projectId == -1 || projectId == 19 || projectId == 28 || projectId == 32) {
+      projectId = floor(random(projectsJSON.size()));
+    }
+
+    JSONObject project = (JSONObject) projectsJSON.get(projectId);
     projectCopy = project.getString("description");
 
     waypoints = new ArrayList<PVector>();
@@ -135,7 +140,7 @@ class SearchlightScene extends Scene {
     super.render();
     background(0);
     pushMatrix();
-    translate(screenWidth / 2.0, screenHeight / 2.0);
+    translate(screenWidth / 2.0 + 20, screenHeight / 2.0);
     translate(-pos.x, -pos.y);
 
     blendMode(ADD);

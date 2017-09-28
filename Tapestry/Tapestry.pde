@@ -1,30 +1,30 @@
 
 /*
-  INTRODUCTION
-    interviews to mov
-  PORTRAITS
-  POSTERS
+  CREDITS
+    data
+  HIGHLIGHT STAGE
+    scene
+    sequence
   EVENTS
     data
     layout
-    labels
   NOUN PHRASES
-    lighten up background quotes
     titles disappear
-  SEARCHLIGHT
-    optimize
-    shift a few pixels away
-    marker blending
-    vary marker size?
-  CREDITS
-    data
-  TYPEWRITER
-    curve
   MISC
-    intro/outro
     scene sequencing
-    full screen
-
+    add reset sketch input
+    intro/outro
+    check unicode
+    // black wallpaper
+    // export app?
+  SEARCHLIGHT
+    // optimize
+    // marker blending
+  FILMS
+    // data
+    // layout
+    // sequence
+  INTRODUCTION
 */
 
 import java.io.File;
@@ -45,12 +45,15 @@ float screenHeight;
 
 void settings () {
   scaleFactor = development ? 3 : 1;
-  size(int(3840 / scaleFactor), int(1080 / scaleFactor), P3D);
+  if (development) {
+    size(int(3840 / scaleFactor), int(1080 / scaleFactor), P3D);    
+  } else {
+    fullScreen();
+  }
 }
 
 void setup () {
   background(0);
-  return;
 }
 
 void draw () {

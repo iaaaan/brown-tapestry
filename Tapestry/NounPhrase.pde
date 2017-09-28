@@ -42,16 +42,16 @@ class NounPhrase {
       int distToHighlight = int(index <= highlightIndex ? highlightIndex - index : highlightIndex + interval - index);
       float targetAlpha = 0;
       if (focusState == -1) {
-        targetAlpha = map(distToHighlight, 0, (interval - 5), 0.15, 0) * 255;
+        targetAlpha = map(distToHighlight, 0, (interval - 5), 0.25, 0) * 255;
       } else if (focusState == 0) {
         targetAlpha = map(distToHighlight, 0, (interval - 5), 1, 0) * 255;
       } else if (focusState == 1) {
         targetAlpha = map(distToHighlight, 0, (interval - 5), 1, 0.6) * 255;
       }
-      alphas[i] = lerp(alphas[i], targetAlpha, 0.03);
+      alphas[i] = lerp(alphas[i], targetAlpha, 0.045);
       fill(alphas[i]);
       if (focusState == 1 && isProjectTitle) {
-        fill(#F280B3, alphas[i]);
+        fill(#F6BC45, alphas[i]);
       }
       text(copy.charAt(i), 0, 0);
       translate(characterWidth, 0);
