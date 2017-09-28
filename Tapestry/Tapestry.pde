@@ -67,7 +67,7 @@ void settings () {
   if (development) {
     size(int(3840 / scaleFactor), int(1080 / scaleFactor), P3D);    
   } else {
-    fullScreen();
+    fullScreen(P3D);
   }
 }
 
