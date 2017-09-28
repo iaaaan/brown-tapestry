@@ -5,19 +5,20 @@ class PostersScene extends Scene {
   float posterWidth = screenWidth / 14.4;
   float posterHeight = screenWidth / 6.75;
   int colorsOffset = 10;
+  boolean fadingOut = false;
 
   PostersScene () {
     id = "posters";
 
+    fadingOut = false;
+
     gutterX = 0;
     gutterY = screenWidth / 12;
     margin = screenWidth / 140;
-    triggers[0] = 100;
+    triggers[0] = 30;
     triggers[1] = 300;
     triggers[2] = 800;
     triggers[3] = 1100;
-
-    
 
     String[] colorsCSV = loadStrings("./colors.txt");
     colors = new color[colorsCSV.length];
@@ -75,6 +76,11 @@ class PostersScene extends Scene {
     for (Poster poster : posters) {
       poster.update();
     }
+
+    if (life > triggers[3] + 200 && !done) {
+      done = true;
+      sceneManager.nextScene(true);
+    }
   }
 
   void render () {
@@ -89,5 +95,12 @@ class PostersScene extends Scene {
       poster.render();
     }
     popMatrix();
+  }
+
+  void fadeOut () {
+    fadingOut = true;
+    for (Poster poster : posters) {
+      poster.fadingOut();
+    }
   }
 }

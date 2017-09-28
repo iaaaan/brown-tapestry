@@ -5,11 +5,14 @@ class Scene {
   float gutterY = 0;
   float margin = 0;
   float[] triggers = {100, 500, 1000, 1300};
+  boolean done = false;
+  int maxLifespan = 60 * 60;
 
   Scene () {}
 
   Scene init () {
     life = 0;
+    done = false;
     return this;
   }
 
@@ -23,5 +26,9 @@ class Scene {
 
   void kill () {
     println("killing scene:", id);
+  }
+
+  void fadeOut () {
+    println("fading out:", id);
   }
 }

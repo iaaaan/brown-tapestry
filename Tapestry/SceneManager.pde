@@ -4,31 +4,44 @@ class SceneManager {
   Scene currentScene = null;
   boolean paused = false;
   String lastSceneId;
-  String[] sceneIds = {"people", "nouns", "searchlight", "posters", "credits"};
+  String[] sceneIds = {"people", "nouns", "searchlight", "posters"};
+
+  String nextSceneId = "";
+  int nextSceneTimer = -1;
+
 
   SceneManager () {
-    lastSceneId = !development ? "blank" : "credits";
+    lastSceneId = !development ? "blank" : "blank";
   }
 
   SceneManager init (PApplet sketch) {
     sceneMap = new HashMap<String, Scene>();
 
     Scene blankScene = new Scene();
+    ModuleScene moduleScene = new ModuleScene(sketch);
+    ThankYouScene thankYouScene = new ThankYouScene(sketch);
+    SpotlightScene spotlightScene = new SpotlightScene();
+
     PeopleScene peopleScene = new PeopleScene();
     NounPhrasesScene nounPhrasesScene = new NounPhrasesScene();
     SearchlightScene searchlightScene = new SearchlightScene();
     PostersScene postersScene = new PostersScene();
-    IntroductionScene introductionScene = new IntroductionScene(sketch);
     CreditsScene creditsScene = new CreditsScene();
+
+    // IntroductionScene introductionScene = new IntroductionScene(sketch);
     // TypewriterScene typewriterScene = new TypewriterScene();
 
     sceneMap.put("blank", blankScene);
+    sceneMap.put("module", moduleScene);
+    sceneMap.put("thanks", thankYouScene);
+    sceneMap.put("spotlight", spotlightScene);
+
     sceneMap.put("people", peopleScene);
     sceneMap.put("nouns", nounPhrasesScene);
     sceneMap.put("searchlight", searchlightScene);
     sceneMap.put("posters", postersScene);
-    sceneMap.put("intro", introductionScene);
     sceneMap.put("credits", creditsScene);
+    // sceneMap.put("intro", introductionScene);
     // sceneMap.put("typewriter", typewriterScene);
     
     currentScene = sceneMap.get(lastSceneId);
@@ -40,6 +53,15 @@ class SceneManager {
     if (currentScene != null) {
       currentScene.update();
     }
+    if (nextSceneTimer > -1) {
+      if (nextSceneTimer == 0 && nextSceneId != null) {
+        sceneManager.currentScene.kill();
+        sceneManager.currentScene = sceneManager.sceneMap.get(nextSceneId);
+        sceneManager.currentScene.init();
+        nextSceneId = null;
+      }      
+      nextSceneTimer --;
+    }
   }
 
   void render () {
@@ -48,83 +70,67 @@ class SceneManager {
     }
   }
 
-  void togglePause () {
-    println("toggle pause");
-    paused = !paused;
-    if (paused && currentScene.id != "blank") {
-      lastSceneId = currentScene.id;
-      currentScene.kill();
-      currentScene = sceneMap.get("blank");
-      println("init blank scene");
-      currentScene.init();
-    } else if (!paused && currentScene.id == "blank"){
-      currentScene.kill();
-      currentScene = sceneMap.get(lastSceneId);
-      currentScene.init();
-    }
-  }
 
   void nextScene () {
-    currentScene.kill();
-    if (currentScene.id != "blank") {
-      lastSceneId = currentScene.id;
+    String newId = currentScene.id;
+    while (newId == currentScene.id) {
+      newId = sceneIds[floor(random(sceneIds.length))];
     }
-    if (lastSceneId == "intro") {
-      currentScene = sceneMap.get("blank");
-      lastSceneId = "people";
-      paused = true;
+    println("next scene will be", newId);
+    transitionToNextScene(newId);
+  }
+
+  void nextScene (boolean instant) {
+    String newId = currentScene.id;
+    while (newId == currentScene.id) {
+      newId = sceneIds[floor(random(sceneIds.length))];
+    }
+    println("next scene will be", newId);
+    if (!instant) {
+      transitionToNextScene(newId);
     } else {
-      currentScene = sceneMap.get(sceneIds[(Arrays.asList(sceneIds).indexOf(lastSceneId) + 1) % (sceneIds.length)]);
+      currentScene.kill();
+      currentScene = sceneMap.get(newId);
+      currentScene.init();
+      nextSceneId = null;
+      nextSceneTimer = -1;
     }
-    float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
-    camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
-    perspective(PI/(3.0), width/height, cameraZ/10.0, cameraZ*10.0);
-    currentScene.init();
   }
 
   void resetScene () {
     currentScene.kill();
     currentScene.init();
-  }
+  }  
 
-  void startIntroduction1 () {
-    println("starting introduction 1");
-    currentScene.kill();
-    currentScene = sceneMap.get("intro");
-    ((IntroductionScene) currentScene).init(0);
-  }
-
-  void resumeIntroduction1 () {
-    if (currentScene.id == "intro") {
-      ((IntroductionScene) currentScene).resume();
+  void transitionToNextScene (String id) {
+    if (currentScene.id == "blank") {
+      currentScene.kill();
+      currentScene = sceneMap.get(id);
+      currentScene.init();
+      nextSceneId = null;
+      nextSceneTimer = -1;
+    } else {
+      currentScene.fadeOut();
+      nextSceneId = id;
+      nextSceneTimer = 100;
     }
   }
 
-  void pause () {
-    paused = true;
-    lastSceneId = currentScene.id;
-    currentScene.kill();
-    currentScene = sceneMap.get("blank");
-    println("init blank scene");
-    currentScene.init();
-  }
-
-  void startViz () {
-    currentScene.kill();
-    println("starting viz");
-    currentScene = sceneMap.get(sceneIds[floor(random(sceneIds.length))]);
-    lastSceneId = currentScene.id;
-    currentScene.init();
-  }
-
-  void startIntroduction2 () {
-    println("starting introduction 2");
-    currentScene.kill();
-    currentScene = sceneMap.get("intro");
-    ((IntroductionScene) currentScene).init(1);
-  }
-
-  
+  // void togglePause () {
+  //   println("toggle pause");
+  //   paused = !paused;
+  //   if (paused && currentScene.id != "blank") {
+  //     lastSceneId = currentScene.id;
+  //     currentScene.kill();
+  //     currentScene = sceneMap.get("blank");
+  //     println("init blank scene");
+  //     currentScene.init();
+  //   } else if (!paused && currentScene.id == "blank"){
+  //     currentScene.kill();
+  //     currentScene = sceneMap.get(lastSceneId);
+  //     currentScene.init();
+  //   }
+  // }
 }
 
 

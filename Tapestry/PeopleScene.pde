@@ -4,9 +4,12 @@ class PeopleScene extends Scene {
   ArrayList<Portrait> portraits;
   float portraitWidth = screenWidth / 40;
   float portraitHeight = screenWidth / 30;
+  boolean fadingOut = false;
 
   PeopleScene () {
     id = "people";
+
+    fadingOut = false;
 
     gutterX = 0;
     gutterY = screenWidth / 18;
@@ -95,6 +98,11 @@ class PeopleScene extends Scene {
     for (Portrait portrait : portraits) {
       portrait.update();
     }
+
+    if (life > triggers[3] + 200 && !done) {
+      done = true;
+      sceneManager.nextScene(true);
+    }
   }
 
   void render () {
@@ -109,5 +117,12 @@ class PeopleScene extends Scene {
       portrait.render();
     }
     popMatrix();
+  }
+
+  void fadeOut () {
+    fadingOut = true;
+    for (Portrait portrait : portraits) {
+      portrait.fadingOut();
+    }
   }
 }

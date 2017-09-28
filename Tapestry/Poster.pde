@@ -9,11 +9,15 @@ class Poster {
   int status = 0;
   float angle = TWO_PI;
   float tAngle = TWO_PI;
+  float alpha = 0;
+  float tAlpha = 1;
   color col;
   float[] thresholds = new float[4];
   PVector[] origins = new PVector[4];
 
   float noiseScaleFactor = 0.3;
+
+  boolean fadingOut = false;
 
   Poster () {}
 
@@ -24,6 +28,8 @@ class Poster {
     h = _h;
     x = _x;
     y = _y;
+
+    fadingOut = false;
 
     origins[0] = new PVector();
     origins[1] = new PVector();
@@ -70,31 +76,37 @@ class Poster {
   }
 
   void update () {
-    if (status == 0 && scene.life > thresholds[0]) {
-        status = 1;
-        angle = PI + PI / 2;
-        tAngle = TWO_PI;
+    if (!fadingOut) {
+      if (status == 0 && scene.life > thresholds[0]) {
+          alpha = 0;
+          tAlpha = 1;
+          status = 1;
+          angle = PI + PI / 2;
+          tAngle = TWO_PI;
+      }
+      if (status == 1 && scene.life > thresholds[1]) {
+          status = 2;
+          angle = PI;
+          tAngle = TWO_PI;
+      }    
+      if (status == 2 && scene.life > thresholds[2]) {
+          status = 3;
+          angle = PI;
+          tAngle = TWO_PI;
+      }    
+      if (status == 3 && scene.life > thresholds[3]) {
+          alpha = 1;
+          tAlpha = 0;
+          status = 4;
+          angle = TWO_PI;
+          tAngle = PI;
+      }    
     }
-    if (status == 1 && scene.life > thresholds[1]) {
-        status = 2;
-        angle = PI;
-        tAngle = TWO_PI;
-    }    
-    if (status == 2 && scene.life > thresholds[2]) {
-        status = 3;
-        angle = PI;
-        tAngle = TWO_PI;
-    }    
-    if (status == 3 && scene.life > thresholds[3]) {
-        status = 4;
-        angle = TWO_PI;
-        tAngle = PI;
-    }    
     angle = lerp(angle, tAngle, 0.1);
+    alpha = lerp(alpha, tAlpha, 0.1);
   }
 
   void render () {
-
     if (status == 0 || (status == 4 && angle <= PI + PI / 2)) return;
 
     pushMatrix();
@@ -160,5 +172,13 @@ class Poster {
         break;
     }
     popMatrix();
+  }
+
+  void fadingOut () {
+    fadingOut = true;
+    tAlpha = 0;
+    status = 4;
+    angle = TWO_PI;
+    tAngle = PI;
   }
 }

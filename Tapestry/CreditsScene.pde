@@ -25,6 +25,8 @@ class CreditsScene extends Scene {
   ArrayList<Project> projects;
   HashMap<Integer, ArrayList<Project>> projectsPerYear;
 
+  boolean fadingOut = false;
+
   CreditsScene () {
     id = "credits";
     bodyFont = loadFont("InputMono-Medium-72.vlw");
@@ -36,7 +38,9 @@ class CreditsScene extends Scene {
     super.init();
     println("init people scene");
 
+    stepInterval = 500;
     currentYear = 2012;
+    fadingOut = false;
 
     yearMarkers = new ArrayList();
 
@@ -151,20 +155,21 @@ class CreditsScene extends Scene {
   void update () {
     super.update();
     
-    stepInterval --;
-    if (stepInterval <= 0) {
-      for (YearMarker marker : yearMarkers) {
-        marker.tpos.x -= (screenWidth / 2.0 / (yearMarkers.size() - 1));
-      }
-      currentYear ++;
-      if (currentYear == 2018) {
-        // done
-        currentYear = 2012;
+    if (!done) {
+      stepInterval --;
+      if (stepInterval <= 0 && !fadingOut) {
         for (YearMarker marker : yearMarkers) {
-          marker.tpos.x += (screenWidth / 2.0 / (yearMarkers.size() - 1)) * (yearMarkers.size());
+          marker.tpos.x -= (screenWidth / 2.0 / (yearMarkers.size() - 1));
         }
+        currentYear ++;
+        if (currentYear == 2018 && !done) {
+          done = true;
+          currentYear --;
+          sceneManager.nextScene();
+          // marker.tpos.x += (screenWidth / 2.0 / (yearMarkers.size() - 1));
+        }
+        stepInterval = 700;
       }
-      stepInterval = 700;
     }
 
     for (YearMarker marker : yearMarkers) {
@@ -174,11 +179,13 @@ class CreditsScene extends Scene {
     for (Integer y : years) {
       ArrayList<Project> projects = projectsPerYear.get(y);
       for (Project p : projects) {
-        if (!p.active && p.year == currentYear) {
-          p.showTimer = 0;
-        }
-        if (p.active && p.year != currentYear) {
-          p.hideTimer = 0;
+        if (!fadingOut) {
+          if (!p.active && p.year == currentYear) {
+            p.showTimer = 0;
+          }
+          if (p.active && p.year != currentYear) {
+            p.hideTimer = 0;
+          }
         }
         p.update();
       }
@@ -219,6 +226,19 @@ class CreditsScene extends Scene {
 
     popMatrix();
     // blendMode(BLEND);
+  }
+
+  void fadeOut () {
+    println("FADEOUT");
+    fadingOut = true;
+    ArrayList<Project> projects = projectsPerYear.get(currentYear);
+    for (Project p : projects) {
+      p.hideTimer = round(random(20));
+      p.showTimer = -1;
+    }
+    for (YearMarker marker : yearMarkers) {
+      marker.tAlpha = 0;
+    }
   }
 }
 

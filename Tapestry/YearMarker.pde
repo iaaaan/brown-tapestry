@@ -6,6 +6,9 @@ class YearMarker {
   PFont bodyFont;
   float fontSize;
   boolean active = false;
+
+  float alpha = 0;
+  float tAlpha = 1;
   
 
   YearMarker () {}
@@ -16,6 +19,8 @@ class YearMarker {
     tpos = _pos.copy();
     fontSize = _fontSize;
     bodyFont = _bodyFont;
+    alpha = 0;
+    tAlpha = 1;
     return this;
   }
 
@@ -27,13 +32,14 @@ class YearMarker {
     if (active && currentYear != year) {
       active = false;
     }
+    alpha = lerp(alpha, tAlpha, 0.1);
   }
 
   void render () {
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
     textFont(bodyFont, fontSize);
-    fill(active ? 255 : 100);
+    fill(active ? 255 : 100, alpha * 255);
     textAlign(CENTER);
     text(year, 0, 0);
     textAlign(LEFT);

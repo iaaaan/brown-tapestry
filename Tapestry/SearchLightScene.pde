@@ -21,6 +21,8 @@ class SearchlightScene extends Scene {
 
   String projectCopy;
 
+  boolean fadingOut;
+
   SearchlightScene () {
     id = "searchlight";
     bodyFont = loadFont("RubikMonoOne-Regular-72.vlw");
@@ -37,6 +39,8 @@ class SearchlightScene extends Scene {
   SearchlightScene init () {
     super.init();
     println("init searchlight scene");
+
+    fadingOut = false;
 
     int projectId = -1;
     while (projectId == -1 || projectId == 19 || projectId == 28 || projectId == 32) {
@@ -97,6 +101,12 @@ class SearchlightScene extends Scene {
 
     float cursorOffset = waypointCursor;
     for (int i = 0; i < waypoints.size() - 1; i++) {
+
+      if (i == waypoints.size() - 2 && !done) {
+        done = true;
+        sceneManager.nextScene();
+      }
+
       PVector v1 = waypoints.get(i);
       PVector v2 = waypoints.get(i + 1);
       float dist = PVector.dist(v1, v2);
@@ -115,13 +125,15 @@ class SearchlightScene extends Scene {
     }
     waypointCursor += speed;
 
-    if (markerSpawnInterval == 0) {
-      PImage texture = markers.size() == 0 ? modules[0] : modules[floor(random(modules.length))];
-      Marker marker = new Marker().init(this, waypoints, markerSpeed, texture);
-      markers.add(marker);
-      markerSpawnInterval = int(150 + random(100));
-    }   
-    markerSpawnInterval --; 
+    if (!fadingOut) {
+      if (markerSpawnInterval == 0) {
+        PImage texture = markers.size() == 0 ? modules[0] : modules[floor(random(modules.length))];
+        Marker marker = new Marker().init(this, waypoints, markerSpeed, texture);
+        markers.add(marker);
+        markerSpawnInterval = int(150 + random(100));
+      }   
+      markerSpawnInterval --; 
+    }
 
     for (int i = 0; i < markers.size(); i++) {
       Marker marker = markers.get(i);
@@ -130,6 +142,11 @@ class SearchlightScene extends Scene {
         markers.remove(i);
         i --;
       }
+    }
+
+    if (life > maxLifespan && !done) {
+      done = true;
+      sceneManager.nextScene();
     }
   }
 
@@ -153,6 +170,16 @@ class SearchlightScene extends Scene {
       segment.render();
     }
     popMatrix();
+  }
+
+  void fadeOut () {
+    fadingOut = true;
+    for (Marker marker : markers) {
+      marker.ts = 0;
+    }
+    for (Segment segment : segments) {
+      segment.tAlpha = 0;
+    }
   }
 
 }

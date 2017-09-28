@@ -128,6 +128,11 @@ class NounPhrasesScene extends Scene {
       }
       stepCount = 60 * 8;
     }
+
+    if (life > maxLifespan && !done) {
+      done = true;
+      sceneManager.nextScene();
+    }
   }
 
   void render () {
@@ -141,6 +146,13 @@ class NounPhrasesScene extends Scene {
       nounPhrase.render();
     }
     popMatrix();
+  }
+
+  void fadeOut () {
+    for (NounPhrase nounPhrase : nounPhrases) {
+      nounPhrase.targetSpeedFactor = 5;
+      nounPhrase.fadingOut = true;
+    }
   }
 
 }

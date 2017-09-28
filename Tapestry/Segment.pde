@@ -9,6 +9,8 @@ class Segment {
   PVector tpos;
   float rot;
   float trot;
+  float alpha = 0;
+  float tAlpha = 1;
 
   PVector[] absolutePos;
 
@@ -42,12 +44,16 @@ class Segment {
     );
     popMatrix();
 
+    alpha = 0;
+    tAlpha = 1;
+
     return this;
   }
 
   void update () {
     pos.lerp(tpos, 0.1);
     rot = lerp(rot, trot, 0.1);
+    alpha = lerp(alpha, tAlpha, 0.1);
   }
 
   void render () {
@@ -55,7 +61,7 @@ class Segment {
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
     rotate(rot);
-    fill(10);
+    fill(25, alpha * 255);
     textSize(fontSize);
     text(copy, 0, textAscent() / 2.0);
     popMatrix();

@@ -6,10 +6,13 @@ class NounPhrase {
   float interval = 20;
   float[] alphas;
   float speedFactor = 30;
+  float targetSpeedFactor = 30;
   PVector pos;
   PVector tpos;
   int focusState = 0;
   boolean isProjectTitle = false;
+  boolean fadingOut = false;
+
 
   NounPhrase () {}
 
@@ -19,6 +22,9 @@ class NounPhrase {
     scene = _scene;
     alphas = new float[copy.length()];
     isProjectTitle = _isProjectTitle;
+    speedFactor = 30;
+    targetSpeedFactor = 30;
+    fadingOut = false;
     return this;
   }
 
@@ -29,6 +35,7 @@ class NounPhrase {
 
   void update () {
     pos.lerp(tpos, 0.1);
+    speedFactor = lerp(speedFactor, targetSpeedFactor, 0.1);
   }
 
   void render () {
@@ -48,7 +55,11 @@ class NounPhrase {
       } else if (focusState == 1) {
         targetAlpha = map(distToHighlight, 0, (interval - 5), 1, 0.6) * 255;
       }
-      alphas[i] = lerp(alphas[i], targetAlpha, 0.045);
+
+      if (!fadingOut || targetAlpha < alphas[i]) {
+        alphas[i] = lerp(alphas[i], targetAlpha, 0.045);
+      }
+
       fill(alphas[i]);
       if (focusState == 1 && isProjectTitle) {
         fill(#F6BC45, alphas[i]);
@@ -58,4 +69,5 @@ class NounPhrase {
     }
     popMatrix();
   }
+
 }

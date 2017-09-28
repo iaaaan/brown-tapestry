@@ -1,20 +1,22 @@
 
 /*
-  CREDITS
-    trigger offset and origin
-    timing
-    relayout based on project width
-  HIGHLIGHT STAGE
-    scene
-    sequence
   MISC
-    scene sequencing
-    add reset sketch input
-    intro/outro
+    scenes timing
+      nouns
+      searchlight
+      posters
+      people
+      credits
+
     check unicode
     // black wallpaper
     // export app?
-
+  CREDITS
+    time per year based on number of projects
+    full angle rotation
+    trigger offset and origin
+    timing
+    relayout based on project width
   EVENTS
     data
     layout
@@ -28,6 +30,20 @@
     // layout
     // sequence
   INTRODUCTION
+
+  
+  SCRIPT
+    module
+    spotlight
+    blank
+    session
+    module
+    thank you
+    spotlight
+    blank
+    spotlight
+    module
+
 */
 
 import java.io.File;
@@ -77,63 +93,45 @@ void draw () {
   sceneManager.render();
   popMatrix();
 
+  if (frameCount == 1) {
+    fill(#FF0000);
+    ellipse(0,height,50,50);
+  }
+
   float cameraZ = (height/2.0) / tan(PI*30.0 / 180.0);
   camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
   perspective(PI/(3.0), width/height, cameraZ/10.0, cameraZ*10.0);
   fill(!development ? 0 : 10);
   rect(0, 0, screenWidth, screenGutter / scaleFactor);
+
 }
 
 void keyReleased () {
-  if (key == ' ') {
-    sceneManager.togglePause();
-  }
   if (key == 'n') {
     sceneManager.nextScene();
   }
   if (key == 'r') {
     sceneManager.resetScene();
   }
+
   if (key == '1') {
-    sceneManager.startIntroduction1();
+    sceneManager.transitionToNextScene("module");
   }
+
   if (key == '2') {
-    sceneManager.resumeIntroduction1();
+    sceneManager.transitionToNextScene("spotlight");
   }
+
   if (key == '3') {
-    sceneManager.startViz();
+    sceneManager.transitionToNextScene("blank");
   }
+
   if (key == '4') {
-    sceneManager.startIntroduction2();
+    sceneManager.transitionToNextScene("nouns");
   }
+
   if (key == '5') {
-    sceneManager.startViz();
-  }
-  if (key == '0') {
-    switch (scriptStep) {
-      case 0:
-        scriptStep ++;
-        sceneManager.startIntroduction1();
-        break;
-      case 1:
-        sceneManager.resumeIntroduction1();
-        scriptStep ++;
-        break;
-      case 2:
-        sceneManager.startViz();
-        scriptStep ++;
-        break;
-      case 3:
-        sceneManager.startIntroduction2();
-        scriptStep ++;
-        break;
-      case 4:
-        sceneManager.startViz();
-        scriptStep ++;
-        break;
-      default:
-        break;
-    }
+    sceneManager.transitionToNextScene("thanks");
   }
 }
 
