@@ -15,8 +15,10 @@ class CreditsScene extends Scene {
   PFont headlineFont;
   JSONArray projectsJSON;
   float fontSize = screenWidth / 80;
-  int stepInterval = 100;
+  int stepInterval = 500;
   int currentYear = 2012;
+
+  float projectWidth = screenWidth / 7;
 
   ArrayList<Integer> years;
   ArrayList<YearMarker> yearMarkers;
@@ -66,14 +68,10 @@ class CreditsScene extends Scene {
          peopleCount += project.getJSONArray("team").size();
       }
       float x = map(i, 0, years.size() - 1, 0, screenWidth / 2.0);
-      PVector pos = new PVector(x, screenHeight / 2.0 - 100 / scaleFactor, 0);
+      PVector pos = new PVector(x, screenHeight / 2.0 - 60 / scaleFactor, 0);
       YearMarker yearMarker = new YearMarker().init(y, pos, fontSize, headlineFont);
       yearMarkers.add(yearMarker);
     }
-
-    // float margin = screenWidth / 40;
-    float margin = 0;
-    float projectWidth = (screenWidth - margin * 2) / maxProjectsPerYear;
 
     projectsPerYear = new HashMap();
     for (int i = 0; i < years.size(); i++) {
@@ -81,11 +79,25 @@ class CreditsScene extends Scene {
       ArrayList<JSONObject> projectsThisYearJSON = projectsPerYearJSON.get(y);
       ArrayList<Project> projects = new ArrayList();
       projectsPerYear.put(y, projects);
+      
+      float totalWidth = projectWidth * projectsThisYearJSON.size();
+      float missingWidth = Math.max(0, projectWidth * (projectsThisYearJSON.size() + 1) - screenWidth); 
+      // println(y, screenWidth, projectWidth * (projectsThisYearJSON.size() + 2), missingWidth);
+
+
+      float x = projectWidth;
       for (int j = 0; j < projectsThisYearJSON.size(); j++) {
         JSONObject projectJSON = projectsThisYearJSON.get(j);
-        float x = map(j, 0, projectsThisYearJSON.size(), 0, projectWidth * projectsThisYearJSON.size() - 1) - (projectWidth * projectsThisYearJSON.size()) / 2.0;
-        PVector pos = new PVector(x, -screenHeight / 3, 0);
-        boolean foldForward = i >= projectsThisYearJSON.size() / 2.0;
+        // float x = map(j, 0, projectsThisYearJSON.size(), 0, projectWidth * projectsThisYearJSON.size() - 1) - (projectWidth * projectsThisYearJSON.size()) / 2.0;
+        // PVector pos = new PVector(x, -screenHeight / 3, 0);
+          
+
+        PVector pos = new PVector(x, -screenHeight / 2.75);
+
+        x += projectWidth;
+
+
+        boolean foldForward = x + projectWidth / 2.0 >= totalWidth / 2.0;
         
         String title = projectJSON.getString("title");
 
@@ -116,55 +128,6 @@ class CreditsScene extends Scene {
           title = "On the Brink\nof Famine";
           lineBreaks = 1;
         }
-        // if (title == "Cuba Interconectada"){
-        //   title = "Cuba Interconectada";
-        //   lineBreaks = 1;
-        // }
-        // if (title == "Measure for Measure"){
-        //   title = "Measure for Measure";
-        //   lineBreaks = 1;
-        // }
-        // if (title == "Earnings Inspector"){
-        //   title = "Earnings Inspector";
-        //   lineBreaks = 1;
-        // }
-        // if (title == "Beyond the Bullets"){
-        //   title = "Beyond the Bullets";
-        //   lineBreaks = 1;
-        // }
-
-
-        // if (title == "Science Surveyor") title = "Science Surveyor";
-        // if (title == "Open Contractors") title = "Open Contractors";
-        // if (title == "Data Interrupted") title = "Data Interrupted";
-        // if (title == "Dispatch") title = "Dispatch";
-        // if (title == "Metromaps") title = "Metromaps";
-        // if (title == "Bushwig") title = "Bushwig";
-        // if (title == "CityBeat") title = "CityBeat";
-        // if (title == "Ensemble") title = "Ensemble";
-        // if (title == "Gistraker") title = "Gistraker";
-        // if (title == "NewsHub") title = "NewsHub";
-        // if (title == "Cannabis Wire") title = "Cannabis Wire";
-        // if (title == "Reframe Iran") title = "Reframe Iran";
-        // if (title == "Visual Genome") title = "Visual Genome";
-        // if (title == "Searchlight") title = "Searchlight";
-        // if (title == "G:Drone") title = "G:Drone";
-        // if (title == "Nueva Nacion") title = "Nueva Nacion";
-        // if (title == "Art++") title = "Art++";
-        // if (title == "1000-Cut") title = "1000-Cut";
-        // if (title == "BazarWatch") title = "BazarWatch";
-        // if (title == "GenderMeme") title = "GenderMeme";
-        // if (title == "Re(ef)source") title = "Re(ef)source";
-        // if (title == "Rough Cut") title = "Rough Cut";
-        // if (title == "Camera Observa") title = "Camera Observa";
-        // if (title == "Campaign") title = "Campaign";
-        // if (title == "Dark Inquiry") title = "Dark Inquiry";
-        // if (title == "DataShare") title = "DataShare";
-        // if (title == "Esper") title = "Esper";
-        // if (title == "VillageLIVE") title = "VillageLIVE";
-        // if (title == "Visual Beat") title = "Visual Beat";
-        // if (title == "We Can") title = "We Can";
-
 
         JSONArray teamJSON = projectJSON.getJSONArray("team");
         ArrayList<String> team = new ArrayList();
@@ -173,7 +136,7 @@ class CreditsScene extends Scene {
           team.add(member.replaceAll("\\(.*\\)", ""));
         }
 
-        Project project = new Project().init(this, pos, y, projectWidth, foldForward, headlineFont, bodyFont, title, team, lineBreaks);
+        Project project = new Project().init(this, pos, y, projectWidth, foldForward, headlineFont, bodyFont, title, team, lineBreaks, missingWidth);
         projects.add(project);
       }
     }
@@ -194,14 +157,14 @@ class CreditsScene extends Scene {
         marker.tpos.x -= (screenWidth / 2.0 / (yearMarkers.size() - 1));
       }
       currentYear ++;
-      if (currentYear == 2017) {
+      if (currentYear == 2018) {
         // done
         currentYear = 2012;
         for (YearMarker marker : yearMarkers) {
-          marker.tpos.x += (screenWidth / 2.0);
+          marker.tpos.x += (screenWidth / 2.0 / (yearMarkers.size() - 1)) * (yearMarkers.size());
         }
       }
-      stepInterval = 100;
+      stepInterval = 700;
     }
 
     for (YearMarker marker : yearMarkers) {
@@ -229,21 +192,31 @@ class CreditsScene extends Scene {
     // perspective(PI/(3.0 * fovFactor), width/height, cameraZ/10.0, cameraZ*10.0);
 
     super.render();
-    background(0);
+    perspective();
+    // background(0);
     // blendMode(ADD);
     
     pushMatrix();
+
+
+
     translate(screenWidth / 2.0, screenHeight / 2.0);
     for (YearMarker marker : yearMarkers) {
       marker.render();
     }
 
+    pushMatrix();
+    translate(-screenWidth / 2.0, 0, 0);
+    
     for (Integer y : years) {
       ArrayList<Project> projects = projectsPerYear.get(y);
       for (Project p : projects) {
         p.render();
       }
     }
+    
+    popMatrix();
+
     popMatrix();
     // blendMode(BLEND);
   }

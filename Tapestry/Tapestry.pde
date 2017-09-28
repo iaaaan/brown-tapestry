@@ -1,8 +1,9 @@
 
 /*
   CREDITS
-    unfold
-    sequence
+    trigger offset and origin
+    timing
+    relayout based on project width
   HIGHLIGHT STAGE
     scene
     sequence
@@ -13,6 +14,7 @@
     check unicode
     // black wallpaper
     // export app?
+
   EVENTS
     data
     layout

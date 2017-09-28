@@ -1,6 +1,6 @@
 
 class Project {
-  Scene scene;
+  CreditsScene scene;
   PVector pos;
   PVector tpos;
   PVector originOffset;
@@ -28,9 +28,12 @@ class Project {
 
   int lineBreaks = 0;
 
+  float totalOffset;
+  float xOffset;
+
   Project () {}
 
-  Project init (Scene _scene, PVector _pos, int _year, float _projectWidth, boolean _foldForward, PFont _headlineFont, PFont _bodyFont, String _title, ArrayList<String> _team, int _lineBreaks) {
+  Project init (CreditsScene _scene, PVector _pos, int _year, float _projectWidth, boolean _foldForward, PFont _headlineFont, PFont _bodyFont, String _title, ArrayList<String> _team, int _lineBreaks, float _xOffset) {
     pos = _pos.copy();
     tpos = _pos.copy();
     year = _year;
@@ -52,6 +55,9 @@ class Project {
     title = _title;
     team = _team;
     lineBreaks = _lineBreaks;
+    
+    totalOffset = _xOffset;
+    xOffset = 0;
 
     return this;
   }
@@ -60,6 +66,7 @@ class Project {
     tAlpha = 1;
     tTheta = 0;
     active = true;
+    xOffset = 0;
     // println("showing", year);
   }
 
@@ -86,11 +93,16 @@ class Project {
       }
       showTimer --;
     }
+
+    if (alpha > 0.05) {
+      xOffset -= totalOffset / 700;
+    }
   }
 
   void render () {
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
+    translate(xOffset, 0, 0);
     translate(originOffset.x, originOffset.y, originOffset.z);
     rotateY(theta);
     translate(-originOffset.x, -originOffset.y, -originOffset.z);
@@ -100,8 +112,10 @@ class Project {
       textAlign(LEFT);
       fill(255, alpha * 255);
       textFont(headlineFont, screenWidth / 120);
+      textLeading(screenWidth / 80);
       text(title, 0, 0);
-      translate(0, (textAscent() + textDescent()) * (4 + lineBreaks), 0);
+      translate(0, (screenWidth / 80) * (2 + lineBreaks), 0);
+      textLeading(screenWidth / 120);
       textFont(bodyFont, screenWidth / 120);
       for (String n : team) {
         text(n, 0, 0);
