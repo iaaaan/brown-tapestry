@@ -49,7 +49,7 @@ class PostersScene extends Scene {
 
   PostersScene init () {
     super.init();
-    println("init posters scene");
+    println("init events scene");
     int x = 0;
     int y = 0;
     int k = 0;

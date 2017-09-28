@@ -4,7 +4,7 @@ class SceneManager {
   Scene currentScene = null;
   boolean paused = false;
   String lastSceneId;
-  String[] sceneIds = {"people", "nouns", "searchlight", "posters", "credits"};
+  String[] sceneIds = {"people", "nouns", "searchlight", "posters", "credits", "events"};
 
   String nextSceneId = "";
   int nextSceneTimer = -1;
@@ -27,6 +27,7 @@ class SceneManager {
     SearchlightScene searchlightScene = new SearchlightScene();
     PostersScene postersScene = new PostersScene();
     CreditsScene creditsScene = new CreditsScene();
+    EventsScene eventsScene = new EventsScene();
 
     // IntroductionScene introductionScene = new IntroductionScene(sketch);
     // TypewriterScene typewriterScene = new TypewriterScene();
@@ -41,6 +42,7 @@ class SceneManager {
     sceneMap.put("searchlight", searchlightScene);
     sceneMap.put("posters", postersScene);
     sceneMap.put("credits", creditsScene);
+    sceneMap.put("events", eventsScene);
     // sceneMap.put("intro", introductionScene);
     // sceneMap.put("typewriter", typewriterScene);
     
