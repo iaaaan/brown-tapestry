@@ -17,8 +17,10 @@
     data
     layout
   NOUN PHRASES
+    lighter text
     titles disappear
   SEARCHLIGHT
+    lighter text
     // optimize
     // marker blending
   FILMS

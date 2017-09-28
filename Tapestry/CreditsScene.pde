@@ -156,7 +156,7 @@ class CreditsScene extends Scene {
       //   currentYear = project.year;
         projectsDone ++;
       }
-      if (project.pos.x + project.xOffset < screenWidth - project.projectWidth && !project.active && !project.done) {
+      if (project.pos.x + project.xOffset < screenWidth - project.projectWidth && !project.active && !project.done && !fadingOut) {
         println("showing", project.title);
         project.active = true;
         project.showTimer = int(random(50));
@@ -244,6 +244,12 @@ class CreditsScene extends Scene {
   void fadeOut () {
     println("FADEOUT");
     fadingOut = true;
+    for (Project project : projects) {
+      project.hideTimer = int(random(50));
+    }
+    for (YearMarker marker : yearMarkers) {
+      marker.tAlpha = 0;
+    }
   }
 }
 

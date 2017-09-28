@@ -73,7 +73,7 @@ class Project {
 
   void hide () {
     tAlpha = 0;
-    tTheta = foldForward ? -PI / 2 : PI / 2;   
+    tTheta = foldForward ? PI / 2 : -PI / 2;   
     active = false; 
     // println("hiding", year);
   }
@@ -111,7 +111,7 @@ class Project {
     if (alpha > 0.05) {
       pushMatrix();
       textAlign(LEFT);
-      fill(255, alpha * 255);
+      fill(alpha * 255, alpha * 255);
       textFont(headlineFont, screenWidth / 100);
       textLeading(screenWidth / 80);
       text(title, 0, 0);
