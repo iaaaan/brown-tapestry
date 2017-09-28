@@ -11,7 +11,7 @@ class SceneManager {
 
 
   SceneManager () {
-    lastSceneId = !development ? "blank" : "blank";
+    lastSceneId = !development ? "blank" : "spotlight";
   }
 
   SceneManager init (PApplet sketch) {

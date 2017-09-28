@@ -14,8 +14,8 @@ class SpotlightScene extends Scene {
   SpotlightScene init () {
     super.init();
     println("init spotlight scene");
-    pos = new PVector(screenWidth / 1.215, -screenWidth / 10, 200 / scaleFactor);
-    tpos = new PVector(screenWidth / 1.515, screenHeight / 1.8, 0);
+    pos = new PVector(screenWidth / 1.115, -screenWidth / 10, 200 / scaleFactor);
+    tpos = new PVector(screenWidth / 1.37, screenHeight / 1.8, 0);
     alpha = 0;
     tAlpha = 1;
     return this;
@@ -35,7 +35,7 @@ class SpotlightScene extends Scene {
     translate(pos.x, pos.y, pos.z);
     fill(255, 225, 180, alpha * 255);
     rectMode(CENTER);
-    rect(0, 0, screenWidth / 8.5, screenWidth / 8.5, screenWidth / 40);
+    rect(0, 0, screenWidth / 8, screenWidth / 8, screenWidth / 40);
     rectMode(CORNER);
     popMatrix();
   }

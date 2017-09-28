@@ -18,7 +18,7 @@ class CreditsScene extends Scene {
   int stepInterval = 500;
   int currentYear = 2012;
 
-  float offsetSpeed = 5 / scaleFactor;
+  float offsetSpeed = 3 / scaleFactor;
 
   float projectWidth = screenWidth / 7;
 
