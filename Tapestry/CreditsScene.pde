@@ -18,12 +18,15 @@ class CreditsScene extends Scene {
   int stepInterval = 500;
   int currentYear = 2012;
 
+  float offsetSpeed = 5 / scaleFactor;
+
   float projectWidth = screenWidth / 7;
 
   ArrayList<Integer> years;
   ArrayList<YearMarker> yearMarkers;
   ArrayList<Project> projects;
-  HashMap<Integer, ArrayList<Project>> projectsPerYear;
+  // HashMap<Integer, ArrayList<Project>> projectsPerYear;
+
 
   boolean fadingOut = false;
 
@@ -58,54 +61,22 @@ class CreditsScene extends Scene {
       projectsPerYearJSON.get(year).add(project);
     }
 
-    // for (int y : years) {
-    int maxProjectsPerYear = 0;
+    projects = new ArrayList();
+    float x = screenWidth;
+
+    yearMarkers.add(new YearMarker().init(2012, new PVector(x - screenWidth / 50, -screenHeight / 2.3), fontSize, headlineFont));
 
     for (int i = 0; i < years.size(); i++) {
-      int y = years.get(i);  
-      int peopleCount = 0;
-      int projectCount = projectsPerYearJSON.get(y).size();
-      if (projectCount > maxProjectsPerYear) {
-        maxProjectsPerYear = projectCount;
-      }
-      for (JSONObject project : projectsPerYearJSON.get(y)) {
-         peopleCount += project.getJSONArray("team").size();
-      }
-      float x = map(i, 0, years.size() - 1, 0, screenWidth / 2.0);
-      PVector pos = new PVector(x, screenHeight / 2.0 - 60 / scaleFactor, 0);
-      YearMarker yearMarker = new YearMarker().init(y, pos, fontSize, headlineFont);
-      yearMarkers.add(yearMarker);
-    }
-
-    projectsPerYear = new HashMap();
-    for (int i = 0; i < years.size(); i++) {
-      int y = years.get(i);
-      ArrayList<JSONObject> projectsThisYearJSON = projectsPerYearJSON.get(y);
-      ArrayList<Project> projects = new ArrayList();
-      projectsPerYear.put(y, projects);
-      
-      float totalWidth = projectWidth * projectsThisYearJSON.size();
-      float missingWidth = Math.max(0, projectWidth * (projectsThisYearJSON.size() + 1) - screenWidth); 
-      // println(y, screenWidth, projectWidth * (projectsThisYearJSON.size() + 2), missingWidth);
+      int year = years.get(i);
+      ArrayList<JSONObject> projectsThisYearJSON = projectsPerYearJSON.get(year);
 
 
-      float x = projectWidth;
       for (int j = 0; j < projectsThisYearJSON.size(); j++) {
         JSONObject projectJSON = projectsThisYearJSON.get(j);
-        // float x = map(j, 0, projectsThisYearJSON.size(), 0, projectWidth * projectsThisYearJSON.size() - 1) - (projectWidth * projectsThisYearJSON.size()) / 2.0;
-        // PVector pos = new PVector(x, -screenHeight / 3, 0);
-          
-
-        PVector pos = new PVector(x, -screenHeight / 2.75);
-
-        x += projectWidth;
-
-
-        boolean foldForward = x + projectWidth / 2.0 >= totalWidth / 2.0;
-        
+        PVector pos = new PVector(x, -screenHeight / 2.5);
+        // boolean foldForward = Math.random() < 0.5;
+        boolean foldForward = true;
         String title = projectJSON.getString("title");
-
-
         int lineBreaks = 0;
         if (title.equals("Measuring Public Perception of Stories in the News")){
           title = "Measuring Public\nPerception of\nStories in the News";
@@ -140,13 +111,32 @@ class CreditsScene extends Scene {
           team.add(member.replaceAll("\\(.*\\)", ""));
         }
 
-        Project project = new Project().init(this, pos, y, projectWidth, foldForward, headlineFont, bodyFont, title, team, lineBreaks, missingWidth);
-        projects.add(project);
-      }
-    }
+        float pWidth = 0;
+        textFont(headlineFont, screenWidth / 100);
+        text(title, 0, 0);
+        if (pWidth < textWidth(title)) pWidth = textWidth(title);
+        textFont(bodyFont, screenWidth / 100);
+        for (String n : team) {
+          if (pWidth < textWidth(n)) pWidth = textWidth(n);
+        }
 
-    for (Project p : projectsPerYear.get(2012)) {
-      p.showTimer = 0;
+        Project project = new Project().init(this, pos, year, foldForward, headlineFont, bodyFont, title, team, lineBreaks, pWidth);
+        projects.add(project);
+        // project.showTimer = 0;
+
+        // x += projectWidth;
+        x += pWidth + screenWidth / 40;
+        if (j == projectsThisYearJSON.size() - 1) {
+          x += screenWidth / 10;
+
+          // add year
+          if (year + 1 < 2018) {
+            PVector yearPos = new PVector(x - screenWidth / 50, -screenHeight / 2.3);
+            YearMarker yearMarker = new YearMarker().init(year + 1, yearPos, fontSize, headlineFont);
+            yearMarkers.add(yearMarker);
+          }
+        }
+      }
     }
 
     return this;
@@ -154,91 +144,106 @@ class CreditsScene extends Scene {
 
   void update () {
     super.update();
-    
-    if (!done) {
-      stepInterval --;
-      if (stepInterval <= 0 && !fadingOut) {
-        for (YearMarker marker : yearMarkers) {
-          marker.tpos.x -= (screenWidth / 2.0 / (yearMarkers.size() - 1));
-        }
-        currentYear ++;
-        if (currentYear == 2018 && !done) {
-          done = true;
-          currentYear --;
-          sceneManager.nextScene();
-          // marker.tpos.x += (screenWidth / 2.0 / (yearMarkers.size() - 1));
-        }
-        stepInterval = 700;
-      }
-    }
 
+    // int lastYear = currentYear;
+    // currentYear = 2012;
+
+    int projectsDone = 0;
+    for (Project project : projects) {
+      project.update();
+      project.xOffset -= offsetSpeed;
+      if (project.pos.x + project.xOffset <= -project.projectWidth) {
+      //   currentYear = project.year;
+        projectsDone ++;
+      }
+      if (project.pos.x + project.xOffset < screenWidth - project.projectWidth && !project.active && !project.done) {
+        println("showing", project.title);
+        project.active = true;
+        project.showTimer = int(random(50));
+      }
+
+      // if (project.pos.x + project.xOffset < project.projectWidth && !project.done) {
+      //   println("hiding", project.title);
+      //   project.done = true;
+      //   project.hideTimer = int(random(50));
+      // }
+    }
+    
     for (YearMarker marker : yearMarkers) {
       marker.update(currentYear);
+      marker.xOffset -= offsetSpeed;
     }
 
-    for (Integer y : years) {
-      ArrayList<Project> projects = projectsPerYear.get(y);
-      for (Project p : projects) {
-        if (!fadingOut) {
-          if (!p.active && p.year == currentYear) {
-            p.showTimer = 0;
-          }
-          if (p.active && p.year != currentYear) {
-            p.hideTimer = 0;
-          }
-        }
-        p.update();
-      }
+    // if (lastYear != currentYear && !done) {
+    //   for (YearMarker marker : yearMarkers) {
+    //     marker.tpos.x -= (screenWidth / 2.0 / (yearMarkers.size() - 1));
+    //   }
+    // }
+    
+    if (projectsDone == projects.size() && !done) {
+      done = true;
+      sceneManager.nextScene(true);
     }
+
+    // if (!done) {
+    //   stepInterval --;
+    //   if (stepInterval <= 0 && !fadingOut) {
+        // for (YearMarker marker : yearMarkers) {
+        //   marker.tpos.x -= (screenWidth / 2.0 / (yearMarkers.size() - 1));
+        // }
+    //     currentYear ++;
+    //     if (currentYear == 2018 && !done) {
+    //       done = true;
+    //       currentYear --;
+    //       sceneManager.nextScene();
+    //       // marker.tpos.x += (screenWidth / 2.0 / (yearMarkers.size() - 1));
+    //     }
+    //     stepInterval = 700;
+    //   }
+    // }
+
+
+    // for (Integer y : years) {
+    //   ArrayList<Project> projects = projectsPerYear.get(y);
+    //   for (Project p : projects) {
+    //     if (!fadingOut) {
+    //       if (!p.active && p.year == currentYear) {
+    //         p.showTimer = 0;
+    //       }
+    //       if (p.active && p.year != currentYear) {
+    //         p.hideTimer = 0;
+    //       }
+    //     }
+    //     p.update();
+    //   }
+    // }
   }
 
   void render () {
-    // float fovFactor = 3;
-    // float cameraZ = (height/2.0) / tan(PI*8.5 / 180.0);
-    // camera(width/2.0, height/2.0, cameraZ, width/2.0, height/2.0, 0, 0, 1, 0);
-    // perspective(PI/(3.0 * fovFactor), width/height, cameraZ/10.0, cameraZ*10.0);
 
     super.render();
     perspective();
-    // background(0);
-    // blendMode(ADD);
-    
+
     pushMatrix();
 
-
-
     translate(screenWidth / 2.0, screenHeight / 2.0);
-    for (YearMarker marker : yearMarkers) {
-      marker.render();
-    }
 
     pushMatrix();
     translate(-screenWidth / 2.0, 0, 0);
-    
-    for (Integer y : years) {
-      ArrayList<Project> projects = projectsPerYear.get(y);
-      for (Project p : projects) {
-        p.render();
-      }
+    for (YearMarker marker : yearMarkers) {
+      marker.render();
     }
-    
+    for (Project project : projects) {
+      project.render();
+    }
     popMatrix();
 
     popMatrix();
-    // blendMode(BLEND);
   }
 
   void fadeOut () {
     println("FADEOUT");
     fadingOut = true;
-    ArrayList<Project> projects = projectsPerYear.get(currentYear);
-    for (Project p : projects) {
-      p.hideTimer = round(random(20));
-      p.showTimer = -1;
-    }
-    for (YearMarker marker : yearMarkers) {
-      marker.tAlpha = 0;
-    }
   }
 }
 

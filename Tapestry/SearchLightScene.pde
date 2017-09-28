@@ -5,7 +5,7 @@ class SearchlightScene extends Scene {
   float fontSize = screenWidth / 50;
   ArrayList<Segment> segments;
   ArrayList<PVector> waypoints;
-  float speed = 1;
+  float speed = 3 / scaleFactor;
   float waypointCursor = 0;
   PVector pos = new PVector();
 

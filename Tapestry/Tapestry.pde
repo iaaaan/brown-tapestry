@@ -1,16 +1,12 @@
 
 /*
   MISC
-    scenes timing
-      nouns
-      searchlight
-      posters
-      people
-      credits
-
+    
     check unicode
     // black wallpaper
     // export app?
+  POSTER
+    alpha
   CREDITS
     time per year based on number of projects
     full angle rotation
@@ -55,7 +51,7 @@ import processing.video.*;
 
 
 SceneManager sceneManager;
-boolean development = false;
+boolean development = true;
 float scaleFactor = 1;
 int scriptStep = 0;
 float screenGutter = 140;

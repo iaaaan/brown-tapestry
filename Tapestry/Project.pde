@@ -28,12 +28,12 @@ class Project {
 
   int lineBreaks = 0;
 
-  float totalOffset;
   float xOffset;
+  boolean done;
 
   Project () {}
 
-  Project init (CreditsScene _scene, PVector _pos, int _year, float _projectWidth, boolean _foldForward, PFont _headlineFont, PFont _bodyFont, String _title, ArrayList<String> _team, int _lineBreaks, float _xOffset) {
+  Project init (CreditsScene _scene, PVector _pos, int _year, boolean _foldForward, PFont _headlineFont, PFont _bodyFont, String _title, ArrayList<String> _team, int _lineBreaks, float _projectWidth) {
     pos = _pos.copy();
     tpos = _pos.copy();
     year = _year;
@@ -47,7 +47,7 @@ class Project {
     theta = foldForward ? PI / 2 : -PI / 2;
     tTheta = foldForward ? PI / 2 : -PI / 2;
     thetaSpeed = 0.1;
-    active = true;
+    active = false;
 
     headlineFont = _headlineFont;
     bodyFont = _bodyFont;
@@ -56,8 +56,9 @@ class Project {
     team = _team;
     lineBreaks = _lineBreaks;
     
-    totalOffset = _xOffset;
     xOffset = 0;
+
+    done = false;
 
     return this;
   }
@@ -66,13 +67,13 @@ class Project {
     tAlpha = 1;
     tTheta = 0;
     active = true;
-    xOffset = 0;
+    // xOffset = 0;
     // println("showing", year);
   }
 
   void hide () {
     tAlpha = 0;
-    tTheta = foldForward ? PI / 2 : -PI / 2;   
+    tTheta = foldForward ? -PI / 2 : PI / 2;   
     active = false; 
     // println("hiding", year);
   }
@@ -94,9 +95,9 @@ class Project {
       showTimer --;
     }
 
-    if (alpha > 0.05) {
-      xOffset -= totalOffset / 700;
-    }
+    // if (alpha > 0.05) {
+    //   xOffset -= totalOffset / 700;
+    // }
   }
 
   void render () {
@@ -111,12 +112,12 @@ class Project {
       pushMatrix();
       textAlign(LEFT);
       fill(255, alpha * 255);
-      textFont(headlineFont, screenWidth / 120);
+      textFont(headlineFont, screenWidth / 100);
       textLeading(screenWidth / 80);
       text(title, 0, 0);
       translate(0, (screenWidth / 80) * (2 + lineBreaks), 0);
-      textLeading(screenWidth / 120);
-      textFont(bodyFont, screenWidth / 120);
+      textLeading(screenWidth / 100);
+      textFont(bodyFont, screenWidth / 100);
       for (String n : team) {
         text(n, 0, 0);
         translate(0, (textAscent() + textDescent()) * 1.5, 0);

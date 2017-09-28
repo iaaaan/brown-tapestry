@@ -4,14 +4,14 @@ class SceneManager {
   Scene currentScene = null;
   boolean paused = false;
   String lastSceneId;
-  String[] sceneIds = {"people", "nouns", "searchlight", "posters"};
+  String[] sceneIds = {"people", "nouns", "searchlight", "posters", "credits"};
 
   String nextSceneId = "";
   int nextSceneTimer = -1;
 
 
   SceneManager () {
-    lastSceneId = !development ? "blank" : "blank";
+    lastSceneId = !development ? "blank" : "credits";
   }
 
   SceneManager init (PApplet sketch) {

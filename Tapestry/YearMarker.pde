@@ -9,6 +9,8 @@ class YearMarker {
 
   float alpha = 0;
   float tAlpha = 1;
+
+  float xOffset;
   
 
   YearMarker () {}
@@ -21,6 +23,8 @@ class YearMarker {
     bodyFont = _bodyFont;
     alpha = 0;
     tAlpha = 1;
+
+    xOffset = 0;
     return this;
   }
 
@@ -38,9 +42,11 @@ class YearMarker {
   void render () {
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
+    translate(xOffset, 0, 0);
+    rotate(-PI / 2);
     textFont(bodyFont, fontSize);
-    fill(active ? 255 : 100, alpha * 255);
-    textAlign(CENTER);
+    fill(#F6BC45, alpha * 255);
+    textAlign(RIGHT);
     text(year, 0, 0);
     textAlign(LEFT);
     popMatrix();
